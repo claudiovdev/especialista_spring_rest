@@ -1,5 +1,6 @@
-package com.algaworks.algafood;
+package com.algaworks.algafood.jpa;
 
+import com.algaworks.algafood.AlgafoodApiApplication;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.jpa.CadastroCozinha;
 import org.springframework.boot.WebApplicationType;

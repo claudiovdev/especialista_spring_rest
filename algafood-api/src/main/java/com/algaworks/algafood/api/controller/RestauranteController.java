@@ -59,4 +59,15 @@ public class RestauranteController {
         }
     }
 
+
+    @DeleteMapping("/{restauranteId}")
+    public ResponseEntity<Restaurante> deletar(Long restauranteId){
+        try{
+            restauranteService.deletar(restauranteId);
+           return ResponseEntity.noContent().build();
+        }catch (RestauranteNaoEncontradoException e){
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

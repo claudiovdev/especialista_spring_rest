@@ -55,4 +55,9 @@ public class RestauranteService {
 
         return restaurante;
     }
+
+    public void deletar(Long restauranteId) {
+        Restaurante restaurante = restauranteRepository.findById(restauranteId).orElseThrow(RestauranteNaoEncontradoException:: new);
+        restauranteRepository.delete(restaurante);
+    }
 }

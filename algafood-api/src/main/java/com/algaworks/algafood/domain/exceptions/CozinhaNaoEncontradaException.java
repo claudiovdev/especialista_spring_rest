@@ -5,4 +5,8 @@ public class CozinhaNaoEncontradaException extends RuntimeException{
     public CozinhaNaoEncontradaException(String mensagem){
         super(mensagem);
     }
+
+    public CozinhaNaoEncontradaException(){
+
+    }
 }

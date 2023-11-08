@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CozinhaService {
 
@@ -18,12 +20,13 @@ public class CozinhaService {
     CozinhaRepository cozinhaRepository;
 
     public Cozinha salvar(Cozinha cozinha){
-        return cozinhaRepository.salvar(cozinha);
+        return cozinhaRepository.save(cozinha);
     }
 
     public void excluir(Long id){
         try {
-            cozinhaRepository.remover(id);
+            Optional<Cozinha> cozinha = cozinhaRepository.findById(id);
+            cozinhaRepository.delete(cozinha.get());
 
         }catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format("Cozinha de codigo %d não pode ser removida pois está em uso", id));

@@ -16,6 +16,7 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class RestauranteService {
@@ -34,13 +35,13 @@ public class RestauranteService {
 
     public Restaurante salvar(Restaurante restaurante){
         Long cozinhaId = restaurante.getCozinha().getId();
-        Cozinha cozinha = cozinhaRepository.find(cozinhaId);
+        Optional<Cozinha> cozinha = cozinhaRepository.findById(cozinhaId);
 
-        if (cozinha == null){
+        if (cozinha.isEmpty()){
             throw new EntidadeNaoEncontradaException(String.format("Não existe cadastro de cozinha com codigo %d", cozinhaId));
         }
 
-        restaurante.setCozinha(cozinha);
+        restaurante.setCozinha(cozinha.get());
         return restauranteRepository.save(restaurante);
     }
 
@@ -49,8 +50,8 @@ public class RestauranteService {
 
         Restaurante restauranteExistente = restauranteRepository.findById(restauranteId).orElseThrow(()-> new RestauranteNaoEncontradoException(String.format("Não existe restaurante com id %d", restauranteId)));
         Long cozinhaId = restaurante.getCozinha().getId();
-        Cozinha cozinha = cozinhaRepository.find(cozinhaId);
-        if (cozinha == null){
+        Optional<Cozinha> cozinha = cozinhaRepository.findById(cozinhaId);
+        if (cozinha.isEmpty()){
             throw new CozinhaNaoEncontradaException(String.format("Não existe cozinha com id %d", cozinhaId));
         }
         BeanUtils.copyProperties(restauranteExistente, restaurante, "id");

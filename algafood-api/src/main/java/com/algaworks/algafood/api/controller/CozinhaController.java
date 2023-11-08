@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cozinhas")
@@ -28,15 +29,15 @@ public class CozinhaController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Cozinha> listar(){
-        return cozinhaRepository.listar();
+        return cozinhaRepository.findAll();
     }
 
     @GetMapping("/{cozinhaId}")
     public ResponseEntity<Cozinha> buscar(@PathVariable(value = "cozinhaId") Long cozinhaId){
-        Cozinha cozinha = cozinhaRepository.find(cozinhaId);
+        Optional<Cozinha> cozinha = cozinhaRepository.findById(cozinhaId);
 
-        if (cozinha != null){
-            return ResponseEntity.status(HttpStatus.OK).body(cozinha);
+        if (cozinha.isEmpty()){
+            return ResponseEntity.status(HttpStatus.OK).body(cozinha.get());
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
@@ -49,12 +50,13 @@ public class CozinhaController {
 
     @PutMapping("/{cozinhaId}")
     public ResponseEntity<Cozinha> atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha){
-            Cozinha cozinhaExistente = cozinhaRepository.find(cozinhaId);
-            if (cozinhaExistente != null){
-                //cozinhaExistente.setNome(cozinha.getNome());
-                BeanUtils.copyProperties(cozinha, cozinhaExistente, "id");
-                cozinhaService.salvar(cozinhaExistente);
-                return ResponseEntity.ok(cozinhaExistente);
+            Optional<Cozinha> cozinhaExistente = cozinhaRepository.findById(cozinhaId);
+            if (cozinhaExistente.isPresent()){
+                BeanUtils.copyProperties(cozinhaExistente, cozinha
+
+                        , "id");
+                Cozinha cozinhaSalva = cozinhaService.salvar(cozinhaExistente.get());
+                return ResponseEntity.ok(cozinhaSalva);
             }
             return ResponseEntity.notFound().build();
 

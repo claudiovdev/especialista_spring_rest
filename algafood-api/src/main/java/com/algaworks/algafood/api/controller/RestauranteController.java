@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -76,6 +77,16 @@ public class RestauranteController {
         Restaurante restaurante = restauranteService.atualizarParcialmente(restauranteId, campos);
         return ResponseEntity.ok().body(restaurante);
 
+    }
+
+    @GetMapping("/por-taxa-frete")
+    public List<Restaurante> buscarPorTaxaFrete(BigDecimal taxaInicial, BigDecimal taxaFinal){
+        return restauranteService.buscarPorTaxaFrete(taxaInicial,taxaFinal);
+    }
+
+    @GetMapping("/nome")
+    public List<Restaurante> buscarPorTaxaFrete(String  nome, Long cozinhaId){
+        return restauranteService.nomeCozinha(nome,cozinhaId);
     }
 
 }

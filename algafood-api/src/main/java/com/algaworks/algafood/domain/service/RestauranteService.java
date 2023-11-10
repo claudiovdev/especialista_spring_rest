@@ -93,4 +93,8 @@ public class RestauranteService {
     public List<Restaurante> nomeCozinha(String nome, Long cozinhaId) {
         return restauranteRepository.findByNomeContainingAndCozinhaId(nome, cozinhaId);
     }
+
+    public List<Restaurante> find(String nome,BigDecimal taxaInicial, BigDecimal taxaFinal ){
+       return restauranteRepository.find(nome,taxaInicial,taxaFinal);
+    }
 }

@@ -5,6 +5,8 @@ import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.RestauranteService;
+import com.algaworks.algafood.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
+import com.algaworks.algafood.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ public class RestauranteController {
 
     @Autowired
     RestauranteService restauranteService;
+
 
     @GetMapping
     public ResponseEntity<List<Restaurante>> listarCozinhas(){
@@ -92,6 +95,13 @@ public class RestauranteController {
     @GetMapping("/nome-por-taxa-frete")
     public List<Restaurante> buscarPorNomeTaxaFrete(String nome,BigDecimal taxaInicial, BigDecimal taxaFinal){
         return restauranteService.find(nome,taxaInicial,taxaFinal);
+    }
+
+    @GetMapping("/frete-gratis")
+    public List<Restaurante> buscarRestauranteComFreteGratis(String nome){
+        var comFreteGratis = new RestauranteComFreteGratisSpec();
+        var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+        return restauranteService.buscarComFreteGratis(comFreteGratis, comNomeSemelhante);
     }
 
 }

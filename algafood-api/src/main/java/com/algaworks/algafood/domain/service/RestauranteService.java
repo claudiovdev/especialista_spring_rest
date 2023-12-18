@@ -7,8 +7,7 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
-import com.algaworks.algafood.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
-import com.algaworks.algafood.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
+import com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +99,7 @@ public class RestauranteService {
        return restauranteRepository.find(nome,taxaInicial,taxaFinal);
     }
 
-    public List<Restaurante> buscarComFreteGratis(RestauranteComFreteGratisSpec comFreteGratis, RestauranteComNomeSemelhanteSpec comNomeSemelhante) {
-        return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
+    public List<Restaurante> buscarComFreteGratis(String nome) {
+        return restauranteRepository.findAll(RestauranteSpecs.comFreteGratis().and(RestauranteSpecs.comNomeSemelhante(nome)));
     }
 }

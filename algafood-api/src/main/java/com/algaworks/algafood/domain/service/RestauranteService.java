@@ -57,7 +57,7 @@ public class RestauranteService {
             throw new CozinhaNaoEncontradaException(String.format("Não existe cozinha com id %d", cozinhaId));
         }
         BeanUtils.copyProperties(restauranteExistente, restaurante, "id", "formaPagamentos",
-                "endereco");
+                "endereco","dataCadastro");
         restaurante.setId(restauranteExistente.getId());
 
         return restauranteRepository.save(restaurante);

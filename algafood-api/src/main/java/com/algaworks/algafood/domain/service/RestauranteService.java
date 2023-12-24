@@ -56,7 +56,7 @@ public class RestauranteService {
         if (cozinha.isEmpty()){
             throw new CozinhaNaoEncontradaException(String.format("Não existe cozinha com id %d", cozinhaId));
         }
-        BeanUtils.copyProperties(restauranteExistente, restaurante, "id");
+        BeanUtils.copyProperties(restauranteExistente, restaurante, "id", "formaPagamentos");
         restaurante.setId(restauranteExistente.getId());
 
         return restauranteRepository.save(restaurante);

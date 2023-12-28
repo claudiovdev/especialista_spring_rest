@@ -28,7 +28,7 @@ public class RestauranteService {
     CozinhaRepository cozinhaRepository;
 
     public List<Restaurante> listar(){
-       return restauranteRepository.findAll();
+       return restauranteRepository.findAll2();
     }
 
     public Restaurante buscar(Long restauranteId) {

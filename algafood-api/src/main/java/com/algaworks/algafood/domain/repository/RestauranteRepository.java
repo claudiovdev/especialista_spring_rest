@@ -13,6 +13,9 @@ import java.util.List;
 @Repository
 public interface RestauranteRepository extends JpaRepository<Restaurante, Long>, RestauranteRepositoryQueries,
         JpaSpecificationExecutor<Restaurante> {
+
+    @Query(" from Restaurante r join r.cozinha join fetch r.formaPagamentos")
+    List<Restaurante> findAll2();
     List<Restaurante> findByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);
 
     List<Restaurante> findByNomeContainingAndCozinhaId(String nome, Long cozinha);

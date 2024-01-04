@@ -24,12 +24,8 @@ public class CidadeController {
     }
 
     @GetMapping("/{cidadeId}")
-    public ResponseEntity<Cidade> buscar(@PathVariable Long cidadeId){
-        try {
-            return ResponseEntity.ok().body(cidadeService.buscar(cidadeId));
-        }catch (CidadeNaoEncontradaException e){
-            return ResponseEntity.notFound().build();
-        }
+    public Cidade buscar(@PathVariable Long cidadeId){
+        return cidadeService.buscarCidadeExistente(cidadeId);
     }
 
     @PostMapping
@@ -39,23 +35,12 @@ public class CidadeController {
     }
 
     @PutMapping("/{cidadeId}")
-    public ResponseEntity<?> atualizar(@PathVariable Long cidadeId,@RequestBody Cidade cidade){
-        try{
-            return ResponseEntity.ok().body(cidadeService.atualizar(cidadeId,cidade));
-        }catch (CidadeNaoEncontradaException e){
-            return ResponseEntity.notFound().build();
-        }catch (EstadoNaoEncontradoException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public Cidade atualizar(@PathVariable Long cidadeId,@RequestBody Cidade cidade){
+       return cidadeService.atualizar(cidadeId, cidade);
     }
 
     @DeleteMapping("/{cidadeId}")
-    public ResponseEntity<Cidade> deletar(@PathVariable Long cidadeId){
-        try {
-            cidadeService.deletar(cidadeId);
-            return ResponseEntity.noContent().build();
-        }catch (CidadeNaoEncontradaException e){
-           return ResponseEntity.notFound().build();
-        }
+    public void deletar(@PathVariable Long cidadeId){
+        cidadeService.deletar(cidadeId);
     }
 }

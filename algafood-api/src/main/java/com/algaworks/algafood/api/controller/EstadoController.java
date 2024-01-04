@@ -27,12 +27,8 @@ public class EstadoController {
     }
 
     @GetMapping("/{estadoId}")
-    public ResponseEntity<Estado> buscar(@PathVariable Long estadoId){
-        try {
-            return ResponseEntity.ok().body(estadoService.buscarPorId(estadoId));
-        }catch (EntidadeNaoEncontradaException e){
-            return ResponseEntity.notFound().build();
-        }
+    public Estado buscar(@PathVariable Long estadoId){
+        return estadoService.buscarEstadoExistente(estadoId);
     }
 
     @PostMapping
@@ -42,22 +38,14 @@ public class EstadoController {
     }
 
     @PutMapping("/{estadoId}")
-    public ResponseEntity<?> atualizar(@PathVariable Long estadoId, @RequestBody Estado estado){
-        try{
-            return ResponseEntity.ok().body(estadoService.atualizar(estadoId, estado));
-        }catch (EstadoNaoEncontradoException e){
-            return ResponseEntity.notFound().build();
-        }
+    public Estado atualizar(@PathVariable Long estadoId, @RequestBody Estado estado){
+        return estadoService.atualizar(estadoId, estado);
     }
 
     @DeleteMapping("/{estadoId}")
-    public ResponseEntity<Estado> deletar(@PathVariable Long estadoId) {
-        try {
-            estadoService.deletar(estadoId);
-            return ResponseEntity.noContent().build();
-        } catch (EstadoNaoEncontradoException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletar(@PathVariable Long estadoId) {
+        estadoService.deletar(estadoId);
     }
 
 }

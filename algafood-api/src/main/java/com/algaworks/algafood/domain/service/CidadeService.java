@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.exceptions.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.CozinhaNaoEncontradaException;
+import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Estado;
@@ -9,6 +10,8 @@ import com.algaworks.algafood.domain.repository.CidadeRepository;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +21,7 @@ public class CidadeService {
 
     public static final String MSG_CIDADE_NAO_ENCONTRADA = "Não foi possivel localizar uma cidade com codigo %d";
     public static final String MSG_ESTADO_NAO_ENCONTRADO = "Não foi possivel localizar um estado com codigo %d";
+    public static final String MSG_CIDADE_EM_USO = "A cidade %d não pode ser deletada pois está em uso";
     @Autowired
     CidadeRepository cidadeRepository;
 
@@ -47,8 +51,13 @@ public class CidadeService {
     }
 
     public void deletar(Long cidadeId) {
-        Cidade cidade = cidadeRepository.findById(cidadeId).orElseThrow(()-> new CidadeNaoEncontradaException(String.format(MSG_CIDADE_NAO_ENCONTRADA, cidadeId)));
-        cidadeRepository.delete(cidade);
+        try{
+            cidadeRepository.deleteById(cidadeId);
+        }catch (EmptyResultDataAccessException e){
+            throw  new CidadeNaoEncontradaException(String.format(MSG_CIDADE_NAO_ENCONTRADA, cidadeId));
+        }catch (DataIntegrityViolationException e){
+            throw new EntidadeEmUsoException(String.format(MSG_CIDADE_EM_USO, cidadeId));
+        }
     }
 
     public Cidade buscarCidadeExistente(Long id){

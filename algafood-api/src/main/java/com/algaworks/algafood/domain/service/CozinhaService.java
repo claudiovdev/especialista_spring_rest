@@ -35,7 +35,7 @@ public class CozinhaService {
         }catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format(MSG_COZINHA_EM_USO, id));
 
-        }catch (NoSuchElementException e){
+        }catch (EmptyResultDataAccessException e){
             throw new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, id));
         }
     }

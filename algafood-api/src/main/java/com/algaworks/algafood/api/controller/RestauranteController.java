@@ -29,13 +29,8 @@ public class RestauranteController {
     }
 
     @GetMapping("/{restauranteId}")
-    public ResponseEntity<Restaurante> buscar(@PathVariable Long restauranteId) {
-        try {
-            Restaurante restauranteEncontrado = restauranteService.buscar(restauranteId);
-            return ResponseEntity.ok().body(restauranteEncontrado);
-        } catch (EntidadeNaoEncontradaException e) {
-           return ResponseEntity.notFound().build();
-        }
+    public Restaurante buscar(@PathVariable Long restauranteId) {
+        return restauranteService.buscarRestauranteExistente(restauranteId);
     }
 
     @PostMapping
@@ -50,16 +45,8 @@ public class RestauranteController {
     }
 
     @PutMapping("/{restauranteId}")
-    public ResponseEntity<?> atualizar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante){
-
-        try {
-            Restaurante restauranteAtualizado = restauranteService.atualizar(restauranteId,restaurante);
-            return ResponseEntity.ok().body(restauranteAtualizado);
-        }catch (RestauranteNaoEncontradoException e){
-            return ResponseEntity.notFound().build();
-        }catch (CozinhaNaoEncontradaException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public Restaurante atualizar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante){
+        return restauranteService.atualizar(restauranteId, restaurante);
     }
 
 
@@ -77,7 +64,6 @@ public class RestauranteController {
     public ResponseEntity<?> atualizarParcial(@PathVariable Long restauranteId, @RequestBody Map<String, Object> campos){
         Restaurante restaurante = restauranteService.atualizarParcialmente(restauranteId, campos);
         return ResponseEntity.ok().body(restaurante);
-
     }
 
     @GetMapping("/por-taxa-frete")

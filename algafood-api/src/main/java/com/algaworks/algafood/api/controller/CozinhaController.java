@@ -22,14 +22,11 @@ import java.util.Optional;
 public class CozinhaController {
 
     @Autowired
-    private CozinhaRepository cozinhaRepository;
-
-    @Autowired
     private CozinhaService cozinhaService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Cozinha> listar(){
-        return cozinhaRepository.findAll();
+        return cozinhaService.buscarTodas();
     }
 
     @GetMapping("/{cozinhaId}")

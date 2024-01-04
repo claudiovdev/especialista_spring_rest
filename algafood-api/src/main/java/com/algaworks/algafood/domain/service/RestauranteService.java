@@ -31,7 +31,7 @@ public class RestauranteService {
     @Autowired
     RestauranteRepository restauranteRepository;
     @Autowired
-    CozinhaRepository cozinhaRepository;
+    CozinhaService cozinhaService;
 
 
     public List<Restaurante> listar(){
@@ -44,8 +44,7 @@ public class RestauranteService {
 
     public Restaurante salvar(Restaurante restaurante){
         Long cozinhaId = restaurante.getCozinha().getId();
-        Cozinha cozinha = cozinhaRepository.findById(cozinhaId).orElseThrow(() -> new CozinhaNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, cozinhaId)));
-
+        Cozinha cozinha = cozinhaService.buscarCozinhaExistente(cozinhaId);
         restaurante.setCozinha(cozinha);
         return restauranteRepository.save(restaurante);
     }
@@ -55,7 +54,7 @@ public class RestauranteService {
 
         Restaurante restauranteExistente = restauranteRepository.findById(restauranteId).orElseThrow(() -> new RestauranteNaoEncontradoException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId)));
         Long cozinhaId = restaurante.getCozinha().getId();
-        Cozinha cozinha = cozinhaRepository.findById(cozinhaId).orElseThrow(() -> new CozinhaNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, cozinhaId)));
+        Cozinha cozinha = cozinhaService.buscarCozinhaExistente(cozinhaId);
         BeanUtils.copyProperties(restauranteExistente, restaurante, "id", "formaPagamentos",
                 "endereco","dataCadastro");
         restaurante.setId(restauranteExistente.getId());

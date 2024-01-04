@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -23,18 +24,19 @@ public class CozinhaService {
     @Autowired
     CozinhaRepository cozinhaRepository;
 
+    public List<Cozinha> buscarTodas(){
+        return cozinhaRepository.findAll();
+    }
+
     public Cozinha salvar(Cozinha cozinha){
         return cozinhaRepository.save(cozinha);
     }
 
     public void excluir(Long id){
         try {
-            Optional<Cozinha> cozinha = cozinhaRepository.findById(id);
-            cozinhaRepository.delete(cozinha.get());
-
+            cozinhaRepository.deleteById(id);
         }catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format(MSG_COZINHA_EM_USO, id));
-
         }catch (EmptyResultDataAccessException e){
             throw new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, id));
         }

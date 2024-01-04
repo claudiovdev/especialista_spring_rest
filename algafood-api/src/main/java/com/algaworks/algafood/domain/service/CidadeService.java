@@ -26,7 +26,7 @@ public class CidadeService {
     CidadeRepository cidadeRepository;
 
     @Autowired
-    EstadoRepository estadoRepository;
+    EstadoService estadoService;
     public List<Cidade> listar() {
         return cidadeRepository.findAll();
     }
@@ -37,6 +37,7 @@ public class CidadeService {
 
 
     public Cidade salvar(Cidade cidade) {
+
         return cidadeRepository.save(cidade);
     }
 
@@ -44,7 +45,7 @@ public class CidadeService {
     public Cidade atualizar(Long cidadeId, Cidade cidade) {
         Cidade cidadeExistente = cidadeRepository.findById(cidadeId).orElseThrow(()-> new CidadeNaoEncontradaException(String.format(MSG_CIDADE_NAO_ENCONTRADA, cidadeId)));
         Long estadoId = cidade.getEstado().getId();
-        Estado estado = estadoRepository.findById(estadoId).orElseThrow(() -> new EstadoNaoEncontradoException(String.format(MSG_ESTADO_NAO_ENCONTRADO, estadoId)));
+        Estado estado = estadoService.buscarEstadoExistente(estadoId);
         BeanUtils.copyProperties(cidade, cidadeExistente, "id");
         cidadeExistente.setEstado(estado);
         return cidadeRepository.save(cidadeExistente);

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -31,7 +32,7 @@ public class CozinhaService {
         }catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format("Cozinha de codigo %d não pode ser removida pois está em uso", id));
 
-        }catch (EmptyResultDataAccessException e){
+        }catch (NoSuchElementException e){
             throw new EntidadeNaoEncontradaException(String.format("Cozinha com codigo %d não foi encontrada", id));
         }
 

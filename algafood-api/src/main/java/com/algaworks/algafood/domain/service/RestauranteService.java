@@ -25,8 +25,7 @@ import java.util.Optional;
 
 @Service
 public class RestauranteService {
-    public static final String MSG_RESTAURANTE_NAO_ENCONTRADO = "Não foi possivel localizar restaurante com id %d";
-    public static final String MSG_COZINHA_NAO_ENCONTRADA = "Não foi possivel localizar cozinha com id %d";
+
     public static final String MSG_RESTAURANTE_EM_USO = "O restaurante com id %d não pode ser deletada pois está em uso";
     @Autowired
     RestauranteRepository restauranteRepository;
@@ -39,7 +38,7 @@ public class RestauranteService {
     }
 
     public Restaurante buscar(Long restauranteId) {
-        return restauranteRepository.findById(restauranteId).orElseThrow(() -> new RestauranteNaoEncontradoException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId)));
+        return restauranteRepository.findById(restauranteId).orElseThrow(() -> new RestauranteNaoEncontradoException( restauranteId));
     }
 
     public Restaurante salvar(Restaurante restaurante){
@@ -52,7 +51,7 @@ public class RestauranteService {
 
     public Restaurante atualizar(Long restauranteId, Restaurante restaurante) {
 
-        Restaurante restauranteExistente = restauranteRepository.findById(restauranteId).orElseThrow(() -> new RestauranteNaoEncontradoException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId)));
+        Restaurante restauranteExistente = restauranteRepository.findById(restauranteId).orElseThrow(() -> new RestauranteNaoEncontradoException( restauranteId));
         Long cozinhaId = restaurante.getCozinha().getId();
         Cozinha cozinha = cozinhaService.buscarCozinhaExistente(cozinhaId);
         BeanUtils.copyProperties(restauranteExistente, restaurante, "id", "formaPagamentos",
@@ -68,16 +67,16 @@ public class RestauranteService {
         }catch (DataIntegrityViolationException e){
             throw new EntidadeEmUsoException(String.format(MSG_RESTAURANTE_EM_USO, restauranteId));
         }catch (EmptyResultDataAccessException e){
-            throw new RestauranteNaoEncontradoException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId));
+            throw  new RestauranteNaoEncontradoException( restauranteId);
         }
     }
 
     public Restaurante buscarRestauranteExistente(Long restauranteId){
-        return restauranteRepository.findById(restauranteId).orElseThrow(() -> new RestauranteNaoEncontradoException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId)));
+        return restauranteRepository.findById(restauranteId).orElseThrow(() -> new RestauranteNaoEncontradoException( restauranteId));
     }
 
     public Restaurante atualizarParcialmente(Long restauranteId, Map<String, Object> campos) {
-        Restaurante restauranteExistente = restauranteRepository.findById(restauranteId).orElseThrow(() -> new RestauranteNaoEncontradoException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId)));
+        Restaurante restauranteExistente = restauranteRepository.findById(restauranteId).orElseThrow(() -> new RestauranteNaoEncontradoException( restauranteId));
         Restaurante restauranteAtualizado = merge(campos, restauranteExistente);
         return atualizar(restauranteId, restauranteAtualizado);
     }

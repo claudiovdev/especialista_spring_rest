@@ -19,7 +19,6 @@ import java.util.Optional;
 @Service
 public class CozinhaService {
 
-    public static final String MSG_COZINHA_NAO_ENCONTRADA = "Cozinha com codigo %d não foi encontrada";
     public static final String MSG_COZINHA_EM_USO = "Cozinha de codigo %d não pode ser removida pois está em uso";
     @Autowired
     CozinhaRepository cozinhaRepository;
@@ -38,11 +37,11 @@ public class CozinhaService {
         }catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format(MSG_COZINHA_EM_USO, id));
         }catch (EmptyResultDataAccessException e){
-            throw new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, id));
+            throw new CozinhaNaoEncontradaException(id);
         }
     }
 
     public Cozinha buscarCozinhaExistente(Long id){
-        return cozinhaRepository.findById(id).orElseThrow(() -> new CozinhaNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, id)));
+        return cozinhaRepository.findById(id).orElseThrow(() -> new CozinhaNaoEncontradaException(id));
     }
 }

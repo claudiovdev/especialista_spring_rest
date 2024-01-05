@@ -9,6 +9,7 @@ import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +53,8 @@ public class RestauranteService {
     public Restaurante atualizar(Long restauranteId, Restaurante restaurante) {
 
         Restaurante restauranteExistente = restauranteRepository.findById(restauranteId).orElseThrow(() -> new RestauranteNaoEncontradoException( restauranteId));
-        Long cozinhaId = restaurante.getCozinha().getId();
-        Cozinha cozinha = cozinhaService.buscarCozinhaExistente(cozinhaId);
-        BeanUtils.copyProperties(restauranteExistente, restaurante, "id", "formaPagamentos",
+        BeanUtils.copyProperties(restaurante, restauranteExistente, "id", "formaPagamentos",
                 "endereco","dataCadastro");
-        restaurante.setId(restauranteExistente.getId());
 
         return restauranteRepository.save(restaurante);
     }
@@ -77,22 +75,21 @@ public class RestauranteService {
 
     public Restaurante atualizarParcialmente(Long restauranteId, Map<String, Object> campos) {
         Restaurante restauranteExistente = restauranteRepository.findById(restauranteId).orElseThrow(() -> new RestauranteNaoEncontradoException( restauranteId));
-        Restaurante restauranteAtualizado = merge(campos, restauranteExistente);
-        return atualizar(restauranteId, restauranteAtualizado);
+        merge(campos, restauranteExistente);
+        return atualizar(restauranteId, restauranteExistente);
     }
 
-    private Restaurante merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
+    private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
         Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
         dadosOrigem.forEach((nomePropriedade, valorPropriedade) ->{
             Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
             field.setAccessible(true);
-
             Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
 
             ReflectionUtils.setField(field, restauranteDestino, novoValor);
         });
-        return restauranteDestino;
     }
 
     public List<Restaurante> buscarPorTaxaFrete(BigDecimal taxaInicial, BigDecimal taxaFinal) {

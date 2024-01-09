@@ -1,4 +1,4 @@
-package com.algaworks.algafood.core;
+package com.algaworks.algafood.core.validation;
 
 import javax.validation.Constraint;
 import javax.validation.OverridesAttribute;

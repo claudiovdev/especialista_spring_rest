@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.exceptionhandler;
 
+import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.NegocioException;
@@ -15,9 +16,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -85,10 +88,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 
         List<Problem.Field> problemFields = ex.getBindingResult().getFieldErrors().stream()
-                .map(fieldError -> {
-                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+                .map(objectError -> {
+                    String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
+                    String name = objectError.getObjectName();
+
+                    if (objectError instanceof FieldError){
+                        name = ((FieldError) objectError).getField();
+                    }
                     return Problem.Field.builder()
-                            .nome(fieldError.getField())
+                            .nome(name)
                             .userMessage(message).build();
                 }).collect(Collectors.toList());
 
@@ -109,6 +117,36 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problem problem = createProbemBuilder(status, problemType, detail)
                 .userMessage(MSG_ERRO_GENERICO_USUARIO_FINAL)
+                .build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(),status,request);
+    }
+
+
+    @ExceptionHandler(ValidacaoException.class)
+    public ResponseEntity<?> handleValidacaoException(ValidacaoException ex, WebRequest request){
+        ProblemType problemType = ProblemType.DADOS_INVALIDOS;
+        String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        List<Problem.Field> problemFields = ex.getBindingResult().getFieldErrors().stream()
+                .map(objectError -> {
+                    String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
+                    String name = objectError.getObjectName();
+
+                    if (objectError instanceof FieldError){
+                        name = ((FieldError) objectError).getField();
+                    }
+
+                    return Problem.Field.builder()
+                            .nome(name)
+                            .userMessage(message)
+                            .build();
+                }).collect(Collectors.toList());
+
+        Problem problem = createProbemBuilder(status, problemType, detail)
+                .userMessage("Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.")
+                .fields(problemFields)
                 .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(),status,request);
@@ -154,13 +192,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
         if (body == null){
             body = Problem.builder()
+                    .timestemp(LocalDateTime.now())
                     .title(status.getReasonPhrase())
                     .status(status.value())
+                    .userMessage(MSG_ERRO_GENERICO_USUARIO_FINAL)
                     .build();
         } else if (body instanceof String) {
             body = Problem.builder()
+                    .timestemp(LocalDateTime.now())
                     .title((String) body)
                     .status(status.value())
+                    .userMessage(MSG_ERRO_GENERICO_USUARIO_FINAL)
                     .build();
         }
 

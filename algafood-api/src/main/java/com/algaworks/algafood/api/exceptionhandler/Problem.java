@@ -19,6 +19,7 @@ public class Problem {
     private String userMessage;
     private LocalDateTime timestemp;
     private List<Field> fields;
+    private List<Object> objects;
 
     @Getter
     @Builder

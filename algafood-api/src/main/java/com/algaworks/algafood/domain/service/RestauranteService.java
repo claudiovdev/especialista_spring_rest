@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.service;
 
+import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exceptions.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
@@ -17,6 +18,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.SmartValidator;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -33,6 +36,8 @@ public class RestauranteService {
     @Autowired
     CozinhaService cozinhaService;
 
+    @Autowired
+    private SmartValidator validator;
 
     public List<Restaurante> listar(){
        return restauranteRepository.findAll2();
@@ -55,6 +60,7 @@ public class RestauranteService {
         Restaurante restauranteExistente = restauranteRepository.findById(restauranteId).orElseThrow(() -> new RestauranteNaoEncontradoException( restauranteId));
         BeanUtils.copyProperties(restaurante, restauranteExistente, "id", "formaPagamentos",
                 "endereco","dataCadastro");
+        validate(restauranteExistente, "restaurante");
 
         return restauranteRepository.save(restaurante);
     }
@@ -76,6 +82,7 @@ public class RestauranteService {
     public Restaurante atualizarParcialmente(Long restauranteId, Map<String, Object> campos) {
         Restaurante restauranteExistente = restauranteRepository.findById(restauranteId).orElseThrow(() -> new RestauranteNaoEncontradoException( restauranteId));
         merge(campos, restauranteExistente);
+        validate(restauranteExistente, "restaurante");
         return atualizar(restauranteId, restauranteExistente);
     }
 
@@ -106,5 +113,14 @@ public class RestauranteService {
 
     public List<Restaurante> buscarComFreteGratis(String nome) {
         return restauranteRepository.findAll(RestauranteSpecs.comFreteGratis().and(RestauranteSpecs.comNomeSemelhante(nome)));
+    }
+
+    private void validate(Restaurante restaurante, String objectName){
+        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
+        validator.validate(restaurante, bindingResult);
+
+        if (bindingResult.hasErrors()){
+            throw new ValidacaoException(bindingResult);
+        }
     }
 }

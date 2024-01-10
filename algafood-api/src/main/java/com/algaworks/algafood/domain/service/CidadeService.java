@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.service;
 
+import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exceptions.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.SmartValidator;
 
 import java.util.List;
 
@@ -24,6 +27,9 @@ public class CidadeService {
     public static final String MSG_CIDADE_EM_USO = "A cidade %d não pode ser deletada pois está em uso";
     @Autowired
     CidadeRepository cidadeRepository;
+
+    @Autowired
+    private SmartValidator validator;
 
     @Autowired
     EstadoService estadoService;
@@ -47,6 +53,7 @@ public class CidadeService {
         Long estadoId = cidade.getEstado().getId();
         Estado estado = estadoService.buscarEstadoExistente(estadoId);
         BeanUtils.copyProperties(cidade, cidadeExistente, "id");
+        validate(cidadeExistente, "cidade");
         cidadeExistente.setEstado(estado);
         return cidadeRepository.save(cidadeExistente);
     }
@@ -63,5 +70,14 @@ public class CidadeService {
 
     public Cidade buscarCidadeExistente(Long id){
        return  cidadeRepository.findById(id).orElseThrow(() -> new CidadeNaoEncontradaException(id));
+    }
+
+    private void validate(Cidade cidade, String objectName){
+        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(cidade, objectName);
+        validator.validate(cidade, bindingResult);
+
+        if (bindingResult.hasErrors()){
+            throw new ValidacaoException(bindingResult);
+        }
     }
 }

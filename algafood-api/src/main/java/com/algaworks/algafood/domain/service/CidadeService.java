@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.SmartValidator;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -42,12 +43,14 @@ public class CidadeService {
     }
 
 
+    @Transactional
     public Cidade salvar(Cidade cidade) {
 
         return cidadeRepository.save(cidade);
     }
 
 
+    @Transactional
     public Cidade atualizar(Long cidadeId, Cidade cidade) {
         Cidade cidadeExistente = cidadeRepository.findById(cidadeId).orElseThrow(()-> new CidadeNaoEncontradaException(cidadeId));
         Long estadoId = cidade.getEstado().getId();

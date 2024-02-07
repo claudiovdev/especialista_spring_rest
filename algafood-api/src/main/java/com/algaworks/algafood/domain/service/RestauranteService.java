@@ -21,6 +21,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.SmartValidator;
 
+import javax.transaction.Transactional;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.List;
@@ -47,6 +48,7 @@ public class RestauranteService {
         return restauranteRepository.findById(restauranteId).orElseThrow(() -> new RestauranteNaoEncontradoException( restauranteId));
     }
 
+    @Transactional
     public Restaurante salvar(Restaurante restaurante){
         Long cozinhaId = restaurante.getCozinha().getId();
         Cozinha cozinha = cozinhaService.buscarCozinhaExistente(cozinhaId);
@@ -55,6 +57,7 @@ public class RestauranteService {
     }
 
 
+    @Transactional
     public Restaurante atualizar(Long restauranteId, Restaurante restaurante) {
 
         Restaurante restauranteExistente = restauranteRepository.findById(restauranteId).orElseThrow(() -> new RestauranteNaoEncontradoException( restauranteId));
@@ -79,6 +82,7 @@ public class RestauranteService {
         return restauranteRepository.findById(restauranteId).orElseThrow(() -> new RestauranteNaoEncontradoException( restauranteId));
     }
 
+    @Transactional
     public Restaurante atualizarParcialmente(Long restauranteId, Map<String, Object> campos) {
         Restaurante restauranteExistente = restauranteRepository.findById(restauranteId).orElseThrow(() -> new RestauranteNaoEncontradoException( restauranteId));
         merge(campos, restauranteExistente);

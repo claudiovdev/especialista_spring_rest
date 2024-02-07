@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.SmartValidator;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -34,10 +35,12 @@ public class EstadoService {
         return estadoRepository.findById(estadoId).orElseThrow(() -> new EstadoNaoEncontradoException(estadoId));
     }
 
+    @Transactional
     public Estado salvar(Estado estado) {
         return estadoRepository.save(estado);
     }
 
+    @Transactional
     public Estado atualizar(Long estadoId, Estado estado) {
         Estado estadoExistente = estadoRepository.findById(estadoId).orElseThrow(() -> new EstadoNaoEncontradoException(estadoId));;
         BeanUtils.copyProperties(estado,estadoExistente, "id");

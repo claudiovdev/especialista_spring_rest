@@ -41,9 +41,8 @@ public class Restaurante {
     private BigDecimal taxaFrete;
 
 
-    @JsonIgnoreProperties(value = "nome", allowGetters = true)
+
     @Valid
-    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
     @NotNull()
     @ManyToOne()
     @JoinColumn(name = "cozinha_id", nullable = false)

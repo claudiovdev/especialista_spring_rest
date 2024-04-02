@@ -1,6 +1,8 @@
 package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.Groups;
+import com.algaworks.algafood.api.model.CozinhaModel;
+import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.domain.exceptions.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.NegocioException;
@@ -17,6 +19,7 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("restaurantes")
@@ -27,31 +30,35 @@ public class RestauranteController {
 
 
     @GetMapping
-    public ResponseEntity<List<Restaurante>> listarCozinhas(){
-        List<Restaurante> cozinhas = restauranteService.listar();
+    public ResponseEntity<List<RestauranteModel>> listarCozinhas(){
+        List<RestauranteModel> cozinhas = toCollectionToModel(restauranteService.listar());
         return ResponseEntity.ok().body(cozinhas);
     }
 
     @GetMapping("/{restauranteId}")
-    public Restaurante buscar(@PathVariable Long restauranteId) {
-        return restauranteService.buscarRestauranteExistente(restauranteId);
+    public RestauranteModel buscar(@PathVariable Long restauranteId) {
+        Restaurante restaurante =   restauranteService.buscarRestauranteExistente(restauranteId);
+        return toModel(restaurante);
+
     }
+
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurante adicionar(@RequestBody @Valid() Restaurante restaurante){
-        return restauranteService.salvar(restaurante);
+    public RestauranteModel adicionar(@RequestBody @Valid() Restaurante restaurante){
+        return toModel(restauranteService.salvar(restaurante));
     }
 
     @PutMapping("/{restauranteId}")
-    public Restaurante atualizar(@PathVariable @Valid Long restauranteId, @RequestBody Restaurante restaurante){
+    public RestauranteModel atualizar(@PathVariable @Valid Long restauranteId, @RequestBody Restaurante restaurante){
         Restaurante atualizarRestaurante = new Restaurante();
         try {
             atualizarRestaurante = restauranteService.atualizar(restauranteId, restaurante);
         }catch (CozinhaNaoEncontradaException e){
             throw new NegocioException(e.getMessage());
         }
-        return atualizarRestaurante;
+        return toModel(atualizarRestaurante);
     }
 
 
@@ -68,23 +75,40 @@ public class RestauranteController {
     }
 
     @GetMapping("/por-taxa-frete")
-    public List<Restaurante> buscarPorTaxaFrete(BigDecimal taxaInicial, BigDecimal taxaFinal){
-        return restauranteService.buscarPorTaxaFrete(taxaInicial,taxaFinal);
+    public List<RestauranteModel> buscarPorTaxaFrete(BigDecimal taxaInicial, BigDecimal taxaFinal){
+        return toCollectionToModel(restauranteService.buscarPorTaxaFrete(taxaInicial,taxaFinal));
     }
 
     @GetMapping("/nome")
-    public List<Restaurante> buscarPorTaxaFrete(String  nome, Long cozinhaId){
-        return restauranteService.nomeCozinha(nome,cozinhaId);
+    public List<RestauranteModel> buscarPorTaxaFrete(String  nome, Long cozinhaId){
+        return toCollectionToModel(restauranteService.nomeCozinha(nome,cozinhaId));
     }
 
     @GetMapping("/nome-por-taxa-frete")
-    public List<Restaurante> buscarPorNomeTaxaFrete(String nome,BigDecimal taxaInicial, BigDecimal taxaFinal){
-        return restauranteService.find(nome,taxaInicial,taxaFinal);
+    public List<RestauranteModel> buscarPorNomeTaxaFrete(String nome,BigDecimal taxaInicial, BigDecimal taxaFinal){
+        return toCollectionToModel(restauranteService.find(nome,taxaInicial,taxaFinal));
     }
 
     @GetMapping("/frete-gratis")
-    public List<Restaurante> buscarRestauranteComFreteGratis(String nome){
-        return restauranteService.buscarComFreteGratis(nome);
+    public List<RestauranteModel> buscarRestauranteComFreteGratis(String nome){
+        return toCollectionToModel(restauranteService.buscarComFreteGratis(nome));
+    }
+
+    private static RestauranteModel toModel(Restaurante restaurante) {
+        CozinhaModel cozinhaModel = new CozinhaModel();
+        cozinhaModel.setId(restaurante.getCozinha().getId());
+        cozinhaModel.setNome(restaurante.getCozinha().getNome());
+
+        RestauranteModel restauranteModel = new RestauranteModel();
+        restauranteModel.setId(restaurante.getId());
+        restauranteModel.setNome(restaurante.getNome());
+        restauranteModel.setTaxaFrete(restaurante.getTaxaFrete());
+        restauranteModel.setCozinha(cozinhaModel);
+        return restauranteModel;
+    }
+
+    private List<RestauranteModel> toCollectionToModel(List<Restaurante> restaurantes){
+        return restaurantes.stream().map(restaurante -> toModel(restaurante)).collect(Collectors.toList());
     }
 
 }

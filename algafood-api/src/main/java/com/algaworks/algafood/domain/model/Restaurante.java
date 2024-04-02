@@ -29,30 +29,19 @@ public class Restaurante {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    @NotBlank()
     @Column(nullable = false)
     private String nome;
 
-    //@DecimalMin("0")
-    //@TaxaFrete()
-    @PositiveOrZero()
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
-
-
-    @Valid
-    @NotNull()
     @ManyToOne()
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
-
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime dataCadastro;
-
 
     @UpdateTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
@@ -62,14 +51,12 @@ public class Restaurante {
     @Embedded
     private Endereco endereco;
 
-
     @JsonIgnore
     @ManyToMany
     @JoinTable(name = "restaurante_forma_pagamento",
                     joinColumns = @JoinColumn(name = "restaurante_id"),
                     inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
     private List<FormaPagamento> formaPagamentos = new ArrayList<>();
-
 
     @JsonIgnore
     @OneToMany(mappedBy = "restaurante")

@@ -16,16 +16,13 @@ import java.util.List;
 @Data
 public class Cozinha {
 
-    @NotNull(groups = Groups.CozinhaId.class)
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Column(nullable = false)
     private String nome;
-
 
     @JsonIgnore
     @OneToMany(mappedBy = "cozinha")

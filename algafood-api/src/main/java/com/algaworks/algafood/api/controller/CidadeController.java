@@ -1,5 +1,9 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.assembler.CidadeModelAssembler;
+import com.algaworks.algafood.api.assembler.CidadeModelDisassembler;
+import com.algaworks.algafood.api.model.request.CidadeModelRequest;
+import com.algaworks.algafood.api.model.response.CidadeModelResponse;
 import com.algaworks.algafood.domain.exceptions.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.exceptions.NegocioException;
@@ -19,28 +23,34 @@ public class CidadeController {
 
     @Autowired
     CidadeService cidadeService;
+    @Autowired
+    CidadeModelAssembler cidadeModelAssembler;
+    @Autowired
+    CidadeModelDisassembler cidadeModelDisassembler;
 
     @GetMapping
-    public ResponseEntity<List<Cidade>> listar(){
-        return ResponseEntity.ok().body(cidadeService.listar());
+    public ResponseEntity<List<CidadeModelResponse>> listar(){
+        return ResponseEntity.ok().body(cidadeModelAssembler.toCollectionModelResponse(cidadeService.listar()));
     }
 
     @GetMapping("/{cidadeId}")
-    public Cidade buscar(@PathVariable Long cidadeId){
-        return cidadeService.buscarCidadeExistente(cidadeId);
+    public CidadeModelResponse buscar(@PathVariable Long cidadeId){
+        return cidadeModelAssembler.toModelResponse(cidadeService.buscarCidadeExistente(cidadeId));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Cidade> salvar( @Valid @RequestBody Cidade cidade){
-        return ResponseEntity.ok().body(cidadeService.salvar(cidade));
+    public ResponseEntity<CidadeModelResponse> salvar( @Valid @RequestBody CidadeModelRequest cidadeModelRequest){
+        Cidade cidade = cidadeModelDisassembler.toDomain(cidadeModelRequest);
+        return ResponseEntity.ok().body(cidadeModelAssembler.toModelResponse(cidadeService.salvar(cidade)));
     }
 
     @PutMapping("/{cidadeId}")
-    public Cidade atualizar(@PathVariable @Valid Long cidadeId, @RequestBody Cidade cidade){
-        Cidade cidadeAtualizada = new Cidade();
+    public CidadeModelResponse atualizar(@PathVariable @Valid Long cidadeId, @RequestBody CidadeModelRequest cidadeModelRequest){
+        CidadeModelResponse cidadeAtualizada = new CidadeModelResponse();
+        Cidade cidade = cidadeModelDisassembler.toDomain(cidadeModelRequest);
         try {
-            cidadeAtualizada = cidadeService.atualizar(cidadeId, cidade);
+            cidadeAtualizada = cidadeModelAssembler.toModelResponse(cidadeService.atualizar(cidadeId, cidade));
         }catch (EstadoNaoEncontradoException e){
             throw new NegocioException(e.getMessage());
         }

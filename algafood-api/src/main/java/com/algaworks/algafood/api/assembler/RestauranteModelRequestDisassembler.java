@@ -15,4 +15,8 @@ public class RestauranteModelRequestDisassembler {
     public Restaurante toDomain(RestauranteModelRequest restauranteModelRequest){
         return modelMapper.map(restauranteModelRequest,Restaurante.class);
     }
+
+    public void copyToDomain(RestauranteModelRequest modelRequest, Restaurante restaurante){
+        modelMapper.map(modelRequest, restaurante);
+    }
 }

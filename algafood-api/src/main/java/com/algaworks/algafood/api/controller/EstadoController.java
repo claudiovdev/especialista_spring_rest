@@ -1,5 +1,9 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.assembler.EstadoModelAssembler;
+import com.algaworks.algafood.api.assembler.EstadoModelDisassembler;
+import com.algaworks.algafood.api.model.request.EstadoModelRequest;
+import com.algaworks.algafood.api.model.response.EstadoModelResponse;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.EstadoNaoEncontradoException;
@@ -22,25 +26,32 @@ public class EstadoController {
     @Autowired
     EstadoService estadoService;
 
+    @Autowired
+    EstadoModelAssembler estadoModelAssembler;
+    @Autowired
+    EstadoModelDisassembler estadoModelDisassembler;
+
     @GetMapping
-    public ResponseEntity<List<Estado>> listar(){
-        return ResponseEntity.ok().body(estadoService.findAll()) ;
+    public ResponseEntity<List<EstadoModelResponse>> listar(){
+        return ResponseEntity.ok().body(estadoModelAssembler.toCollectionModelResponse(estadoService.findAll())) ;
     }
 
     @GetMapping("/{estadoId}")
-    public Estado buscar(@PathVariable Long estadoId){
-        return estadoService.buscarEstadoExistente(estadoId);
+    public EstadoModelResponse buscar(@PathVariable Long estadoId){
+        return estadoModelAssembler.toModelResponse(estadoService.buscarEstadoExistente(estadoId));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Estado> cadastrar(@Valid @RequestBody Estado estado){
-        return ResponseEntity.ok().body(estadoService.salvar(estado));
+    public ResponseEntity<EstadoModelResponse> cadastrar(@Valid @RequestBody EstadoModelRequest estadoModelRequest){
+        Estado estado = estadoModelDisassembler.toDomain(estadoModelRequest);
+        return ResponseEntity.ok().body(estadoModelAssembler.toModelResponse(estadoService.salvar(estado)));
     }
 
     @PutMapping("/{estadoId}")
-    public Estado atualizar(@PathVariable @Valid Long estadoId, @RequestBody Estado estado){
-        return estadoService.atualizar(estadoId, estado);
+    public EstadoModelResponse atualizar(@PathVariable @Valid Long estadoId, @RequestBody EstadoModelRequest estadoModelRequest){
+        Estado estado = estadoModelDisassembler.toDomain(estadoModelRequest);
+        return estadoModelAssembler.toModelResponse(estadoService.atualizar(estadoId, estado));
     }
 
     @DeleteMapping("/{estadoId}")

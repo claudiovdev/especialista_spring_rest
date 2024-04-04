@@ -12,6 +12,7 @@ public class RestauranteModelResponse {
     private Long id;
     private String nome;
     private BigDecimal taxaFrete;
+    private boolean ativo;
     private CozinhaModelResponse cozinha;
 
 

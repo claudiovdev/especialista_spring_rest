@@ -67,6 +67,16 @@ public class RestauranteService {
 
         return restauranteRepository.save(restaurante);
     }
+    @Transactional
+    public void ativar(Long restauranteId){
+        Restaurante restaurante = buscarRestauranteExistente(restauranteId);
+        restaurante.ativar();
+    }
+    @Transactional
+    public void inativar(Long restauranteId){
+        Restaurante restaurante = buscarRestauranteExistente(restauranteId);
+        restaurante.inativar();
+    }
 
     public void deletar(Long restauranteId) {
         try {

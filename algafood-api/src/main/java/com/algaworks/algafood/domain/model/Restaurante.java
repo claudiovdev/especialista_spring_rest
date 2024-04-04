@@ -1,20 +1,13 @@
 package com.algaworks.algafood.domain.model;
 
-import com.algaworks.algafood.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-import javax.validation.groups.ConvertGroup;
-import javax.validation.groups.Default;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +44,8 @@ public class Restaurante {
     @Embedded
     private Endereco endereco;
 
+    private Boolean ativo = Boolean.TRUE;
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(name = "restaurante_forma_pagamento",
@@ -61,5 +56,13 @@ public class Restaurante {
     @JsonIgnore
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos = new ArrayList<>();
+
+    public void ativar(){
+        setAtivo(true);
+    }
+
+    public void inativar(){
+        setAtivo(false);
+    }
 
 }

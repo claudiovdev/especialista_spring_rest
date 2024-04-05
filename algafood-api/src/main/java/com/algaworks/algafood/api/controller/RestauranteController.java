@@ -1,7 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.api.assembler.RestauranteModelAssember;
-import com.algaworks.algafood.api.assembler.RestauranteModelRequestDisassembler;
+import com.algaworks.algafood.api.assembler.modelAssembler.RestauranteModelAssember;
+import com.algaworks.algafood.api.assembler.modelDisassembler.RestauranteModelRequestDisassembler;
 import com.algaworks.algafood.api.model.request.RestauranteModelRequest;
 import com.algaworks.algafood.api.model.response.RestauranteModelResponse;
 import com.algaworks.algafood.domain.exceptions.CozinhaNaoEncontradaException;

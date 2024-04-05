@@ -1,7 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.api.assembler.FormaPagamentoAssembler;
-import com.algaworks.algafood.api.assembler.FormaPagamentoDisassembler;
+import com.algaworks.algafood.api.assembler.modelAssembler.FormaPagamentoAssembler;
+import com.algaworks.algafood.api.assembler.modelDisassembler.FormaPagamentoDisassembler;
 import com.algaworks.algafood.api.model.request.FormaPagamentoModelRequest;
 import com.algaworks.algafood.api.model.response.FormaPagamentoModelResponse;
 import com.algaworks.algafood.domain.model.FormaPagamento;

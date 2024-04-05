@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.assembler;
+package com.algaworks.algafood.api.assembler.modelDisassembler;
 
 import com.algaworks.algafood.api.model.request.GrupoModelRequest;
 import com.algaworks.algafood.domain.model.Grupo;

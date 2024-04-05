@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.assembler;
+package com.algaworks.algafood.api.assembler.modelAssembler;
 
 import com.algaworks.algafood.api.model.response.EstadoModelResponse;
 import com.algaworks.algafood.domain.model.Estado;

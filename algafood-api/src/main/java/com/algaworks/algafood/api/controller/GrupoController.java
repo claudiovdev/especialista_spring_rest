@@ -1,12 +1,11 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.api.assembler.GrupoModelAssembler;
-import com.algaworks.algafood.api.assembler.GrupoModelDisassembler;
+import com.algaworks.algafood.api.assembler.modelAssembler.GrupoModelAssembler;
+import com.algaworks.algafood.api.assembler.modelDisassembler.GrupoModelDisassembler;
 import com.algaworks.algafood.api.model.request.GrupoModelRequest;
 import com.algaworks.algafood.api.model.response.GrupoModelResponse;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.service.GrupoService;
-import groovy.transform.AutoFinal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

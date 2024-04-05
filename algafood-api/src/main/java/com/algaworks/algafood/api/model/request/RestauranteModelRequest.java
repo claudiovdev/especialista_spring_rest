@@ -20,4 +20,7 @@ public class RestauranteModelRequest {
     @Valid
     @NotNull
     private CozinhaIdModelRequest cozinha;
+    @Valid
+    @NotNull
+    private EnderecoModelRequest endereco;
 }

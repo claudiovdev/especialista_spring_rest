@@ -45,8 +45,6 @@ public class RestauranteController {
 
     }
 
-
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RestauranteModelResponse adicionar(@RequestBody @Valid() RestauranteModelRequest restauranteModelRequest){

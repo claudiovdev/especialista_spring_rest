@@ -5,6 +5,7 @@ import com.algaworks.algafood.domain.exceptions.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.RestauranteNaoEncontradoException;
+import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
@@ -38,6 +39,9 @@ public class RestauranteService {
     CozinhaService cozinhaService;
 
     @Autowired
+    CidadeService cidadeService;
+
+    @Autowired
     private SmartValidator validator;
 
     public List<Restaurante> listar(){
@@ -52,17 +56,19 @@ public class RestauranteService {
     public Restaurante salvar(Restaurante restaurante){
         Long cozinhaId = restaurante.getCozinha().getId();
         Cozinha cozinha = cozinhaService.buscarCozinhaExistente(cozinhaId);
+        Cidade cidade = cidadeService.buscar(restaurante.getEndereco().getCidade().getId());
         restaurante.setCozinha(cozinha);
+        restaurante.getEndereco().setCidade(cidade);
         return restauranteRepository.save(restaurante);
     }
 
 
     @Transactional
     public Restaurante atualizar(Long restauranteId, Restaurante restaurante) {
-
         Restaurante restauranteExistente = restauranteRepository.findById(restauranteId).orElseThrow(() -> new RestauranteNaoEncontradoException( restauranteId));
-        BeanUtils.copyProperties(restaurante, restauranteExistente, "id", "formaPagamentos",
-                "endereco","dataCadastro");
+        cozinhaService.buscarCozinhaExistente(restaurante.getCozinha().getId());
+       cidadeService.buscar(restaurante.getEndereco().getCidade().getId());
+        BeanUtils.copyProperties(restaurante, restauranteExistente, "id", "formaPagamentos","dataCadastro");
         validate(restauranteExistente, "restaurante");
 
         return restauranteRepository.save(restaurante);

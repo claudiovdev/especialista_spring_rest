@@ -47,7 +47,7 @@ public class UsuarioController {
 
     @PutMapping
     public UsuarioModelResponse atualizar(@PathVariable Long usuarioId,
-                                          @RequestBody UsuarioUpdateModelRequest usuarioModelRequest){
+                                          @RequestBody @Valid UsuarioUpdateModelRequest usuarioModelRequest){
         var usuarioExistente = usuarioService.buscarUsuarioExistente(usuarioId);
         usuarioModelDisassembler.atualizar(usuarioModelRequest, usuarioExistente);
         return usuarioModelAssember.toModelResponse(usuarioService.cadastrar(usuarioExistente));
@@ -55,9 +55,8 @@ public class UsuarioController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void atualizarSenha(@PathVariable Long usuarioId, @RequestBody SenhaUsuarioModelRequest usuarioModelRequest) {
-        var usuarioExistente = usuarioService.buscarUsuarioExistente(usuarioId);
-        usuarioService.atualizarSenha(usuarioExistente, usuarioModelRequest.getSenhaAntiga(), usuarioModelRequest.getNovaSenha());
+    public void atualizarSenha(@PathVariable Long usuarioId, @RequestBody @Valid SenhaUsuarioModelRequest usuarioModelRequest) {
+        usuarioService.atualizarSenha(usuarioId, usuarioModelRequest.getSenhaAntiga(), usuarioModelRequest.getNovaSenha());
     }
 
 

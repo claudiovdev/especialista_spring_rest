@@ -7,6 +7,7 @@ import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -29,11 +30,12 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public void atualizarSenha(Usuario usuarioExistente, String senhaAntiga, String novaSenha) {
+    @Transactional
+    public void atualizarSenha(Long usuarioId, String senhaAntiga, String novaSenha) {
+        var usuarioExistente = buscarUsuarioExistente(usuarioId);
         if (!usuarioExistente.getSenha().equals(senhaAntiga)){
             throw new SenhaIncompativelException(MSG_SENHA_INCONPATIVEL);
         }
         usuarioExistente.setSenha(novaSenha);
-        usuarioRepository.save(usuarioExistente);
     }
 }

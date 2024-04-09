@@ -45,7 +45,7 @@ public class UsuarioController {
         return usuarioModelAssember.toModelResponse(usuarioService.cadastrar(usuario));
     }
 
-    @PutMapping
+    @PutMapping("/{usuarioId}")
     public UsuarioModelResponse atualizar(@PathVariable Long usuarioId,
                                           @RequestBody @Valid UsuarioUpdateModelRequest usuarioModelRequest){
         var usuarioExistente = usuarioService.buscarUsuarioExistente(usuarioId);
@@ -53,14 +53,14 @@ public class UsuarioController {
         return usuarioModelAssember.toModelResponse(usuarioService.cadastrar(usuarioExistente));
     }
 
-    @PutMapping
+    @PutMapping("/{usuarioId}/senha")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void atualizarSenha(@PathVariable Long usuarioId, @RequestBody @Valid SenhaUsuarioModelRequest usuarioModelRequest) {
         usuarioService.atualizarSenha(usuarioId, usuarioModelRequest.getSenhaAntiga(), usuarioModelRequest.getNovaSenha());
     }
 
 
-    @DeleteMapping
+    @DeleteMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Long usuarioId){
         usuarioService.deletarUsuario(usuarioId);

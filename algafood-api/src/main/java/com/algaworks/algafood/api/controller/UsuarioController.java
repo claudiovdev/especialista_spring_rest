@@ -60,4 +60,9 @@ public class UsuarioController {
     }
 
 
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletar(@PathVariable Long usuarioId){
+        usuarioService.deletarUsuario(usuarioId);
+    }
 }

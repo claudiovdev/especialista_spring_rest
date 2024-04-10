@@ -1,14 +1,9 @@
 package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.core.validation.ValidacaoException;
-import com.algaworks.algafood.domain.exceptions.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.RestauranteNaoEncontradoException;
-import com.algaworks.algafood.domain.model.Cidade;
-import com.algaworks.algafood.domain.model.Cozinha;
-import com.algaworks.algafood.domain.model.Restaurante;
-import com.algaworks.algafood.domain.repository.CozinhaRepository;
+import com.algaworks.algafood.domain.model.*;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -25,9 +20,9 @@ import org.springframework.validation.SmartValidator;
 import javax.transaction.Transactional;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class RestauranteService {
@@ -40,6 +35,12 @@ public class RestauranteService {
 
     @Autowired
     CidadeService cidadeService;
+
+    @Autowired
+    FormaPagamentoService formaPagamentoService;
+
+    @Autowired
+    ProdutoService produtoService;
 
     @Autowired
     private SmartValidator validator;
@@ -135,6 +136,21 @@ public class RestauranteService {
         return restauranteRepository.findAll(RestauranteSpecs.comFreteGratis().and(RestauranteSpecs.comNomeSemelhante(nome)));
     }
 
+    @Transactional
+    public void desassociarFormaPagamento(Long restauranteId, Long formapagamentoId){
+        Restaurante restaurante = buscarRestauranteExistente(restauranteId);
+        FormaPagamento formaPagamento = formaPagamentoService.buscar(formapagamentoId);
+
+        restaurante.removerFormaPagamento(formaPagamento);
+    }
+    @Transactional
+    public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+        Restaurante restaurante = buscarRestauranteExistente(restauranteId);
+        FormaPagamento formaPagamento = formaPagamentoService.buscar(formaPagamentoId);
+
+        restaurante.adicionarFormaPagamento(formaPagamento);
+    }
+
     private void validate(Restaurante restaurante, String objectName){
         BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
         validator.validate(restaurante, bindingResult);
@@ -142,5 +158,16 @@ public class RestauranteService {
         if (bindingResult.hasErrors()){
             throw new ValidacaoException(bindingResult);
         }
+    }
+
+
+    public List<Produto> listarProdutos(Long restauranteId) {
+        Restaurante restaurante = buscarRestauranteExistente(restauranteId);
+        return produtoService.buscarTodosProdutos(restaurante);
+    }
+
+    public Produto buscarProdutoPorRestaurante(Long restauranteId, Long produtoId) {
+        Restaurante restaurante = buscarRestauranteExistente(restauranteId);
+        return produtoService.buscarProdutoExistente(produtoId, restauranteId);
     }
 }

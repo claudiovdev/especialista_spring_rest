@@ -170,4 +170,16 @@ public class RestauranteService {
         Restaurante restaurante = buscarRestauranteExistente(restauranteId);
         return produtoService.buscarProdutoExistente(produtoId, restauranteId);
     }
+
+    @Transactional
+    public void atualizarFechamento(Long restauranteId) {
+      var restaurante =  buscarRestauranteExistente(restauranteId);
+      restaurante.setAberto(false);
+    }
+
+    @Transactional
+    public void atualizarAbertura(Long restauranteId) {
+        var restaurante = buscarRestauranteExistente(restauranteId);
+        restaurante.setAberto(true);
+    }
 }

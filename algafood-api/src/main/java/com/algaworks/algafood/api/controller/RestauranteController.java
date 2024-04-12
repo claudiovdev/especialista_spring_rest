@@ -103,6 +103,16 @@ public class RestauranteController {
         restauranteService.ativar(restauranteId);
     }
 
+    @PutMapping("/ativacoes")
+    public void ativarRestaurantes(@RequestBody List<Long> restauranteIds){
+        restauranteService.ativarRestaurantes(restauranteIds);
+    }
+
+    @DeleteMapping("/ativacoes")
+    public void inativarRestaurantes(@RequestBody List<Long> restauranteIds){
+        restauranteService.inativarRestaurantes(restauranteIds);
+    }
+
     @DeleteMapping("/{restauranteId}/inativo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void inativar(@PathVariable Long restauranteId){

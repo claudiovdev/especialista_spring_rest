@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exceptions.EntidadeEmUsoException;
+import com.algaworks.algafood.domain.exceptions.NegocioException;
 import com.algaworks.algafood.domain.exceptions.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.*;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
@@ -199,5 +200,22 @@ public class RestauranteService {
         Usuario usuario = usuarioService.buscarUsuarioExistente(usuarioId);
 
         restaurante.getUsuarios().remove(usuario);
+    }
+
+    @Transactional
+    public void ativarRestaurantes(List<Long> restauranteIds) {
+        try {
+            restauranteIds.forEach(this::ativar);
+        }catch (RestauranteNaoEncontradoException e){
+            throw new NegocioException(e.getMessage());
+        }
+    }
+    @Transactional
+    public void inativarRestaurantes(List<Long> restauranteIds) {
+        try {
+            restauranteIds.forEach(this::inativar);
+        }catch (RestauranteNaoEncontradoException e){
+            throw new NegocioException(e.getMessage());
+        }
     }
 }

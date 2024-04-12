@@ -21,6 +21,9 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private GrupoService grupoService;
+
+    @Autowired
     private EntityManager entityManager;
 
 
@@ -59,5 +62,21 @@ public class UsuarioService {
         }catch (EmptyResultDataAccessException e){
             throw  new UsuarioNaoEncontradoException( usuarioId);
         }
+    }
+
+    @Transactional
+    public void desassociarGrupo(Long usuarioId, Long grupoId) {
+        var usuario = buscarUsuarioExistente(usuarioId);
+        var grupo = grupoService.buscarPorId(grupoId);
+
+        usuario.getGrupos().remove(grupo);
+    }
+
+    @Transactional
+    public void associarGrupo(Long usuarioId, Long grupoId) {
+        var usuario = buscarUsuarioExistente(usuarioId);
+        var grupo = grupoService.buscarPorId(grupoId);
+
+        usuario.getGrupos().add(grupo);
     }
 }

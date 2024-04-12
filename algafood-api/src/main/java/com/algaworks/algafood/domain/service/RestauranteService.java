@@ -44,6 +44,8 @@ public class RestauranteService {
 
     @Autowired
     private SmartValidator validator;
+    @Autowired
+    private UsuarioService usuarioService;
 
     public List<Restaurante> listar(){
        return restauranteRepository.findAll2();
@@ -181,5 +183,21 @@ public class RestauranteService {
     public void atualizarAbertura(Long restauranteId) {
         var restaurante = buscarRestauranteExistente(restauranteId);
         restaurante.setAberto(true);
+    }
+
+    @Transactional
+    public void associarResponsavel(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = buscarRestauranteExistente(restauranteId);
+        Usuario usuario = usuarioService.buscarUsuarioExistente(usuarioId);
+
+        restaurante.getUsuarios().add(usuario);
+    }
+
+    @Transactional
+    public void desassociarResponsavel(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = buscarRestauranteExistente(restauranteId);
+        Usuario usuario = usuarioService.buscarUsuarioExistente(usuarioId);
+
+        restaurante.getUsuarios().remove(usuario);
     }
 }

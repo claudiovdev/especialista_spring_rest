@@ -4,7 +4,6 @@ import com.algaworks.algafood.api.assembler.modelAssembler.GrupoModelAssembler;
 import com.algaworks.algafood.api.assembler.modelAssembler.UsuarioModelAssember;
 import com.algaworks.algafood.api.model.response.GrupoModelResponse;
 import com.algaworks.algafood.domain.service.UsuarioService;
-import net.sf.jasperreports.engine.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

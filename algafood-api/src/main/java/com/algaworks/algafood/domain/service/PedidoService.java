@@ -35,8 +35,8 @@ public class PedidoService {
         return pedidoRepository.findAll();
     }
 
-    public Pedido buscarPedidoExistente(Long pedidoId) {
-        return pedidoRepository.findById(pedidoId).orElseThrow(()-> new PedidoNaoEncontradoException(pedidoId));
+    public Pedido buscarPedidoExistente(String codigoId) {
+        return pedidoRepository.findByCodigo(codigoId).orElseThrow(()-> new PedidoNaoEncontradoException(codigoId));
     }
 
     public Pedido emitirPedido(Pedido pedido) {

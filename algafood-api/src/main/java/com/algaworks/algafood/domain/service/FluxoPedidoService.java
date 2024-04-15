@@ -15,19 +15,19 @@ public class FluxoPedidoService {
     @Autowired
     PedidoService pedidoService;
     @Transactional
-    public void confirmar(Long pedidoId){
-        Pedido pedido = pedidoService.buscarPedidoExistente(pedidoId);
+    public void confirmar(String codigo){
+        Pedido pedido = pedidoService.buscarPedidoExistente(codigo);
         pedido.confirmar();
     }
 
     @Transactional
-    public void cancelar(Long pedidoId) {
-        Pedido pedido = pedidoService.buscarPedidoExistente(pedidoId);
+    public void cancelar(String codigo) {
+        Pedido pedido = pedidoService.buscarPedidoExistente(codigo);
         pedido.cancelar();
     }
 
-    public void entregar(Long pedidoId) {
-        Pedido pedido = pedidoService.buscarPedidoExistente(pedidoId);
+    public void entregar(String codigo) {
+        Pedido pedido = pedidoService.buscarPedidoExistente(codigo);
         pedido.entregue();
     }
 }

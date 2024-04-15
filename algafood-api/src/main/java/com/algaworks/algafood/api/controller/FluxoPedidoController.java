@@ -1,25 +1,13 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.api.assembler.modelAssembler.PedidoModelAssembler;
-import com.algaworks.algafood.api.assembler.modelAssembler.PedidoResumoModelAssembler;
-import com.algaworks.algafood.api.assembler.modelDisassembler.PedidoModelDisassembler;
-import com.algaworks.algafood.api.model.request.PedidoModelRequest;
-import com.algaworks.algafood.api.model.response.PedidoModelResponse;
-import com.algaworks.algafood.api.model.response.PedidoResumidoModelResponse;
-import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
-import com.algaworks.algafood.domain.exceptions.NegocioException;
-import com.algaworks.algafood.domain.model.Pedido;
-import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.service.FluxoPedidoService;
-import com.algaworks.algafood.domain.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
-@RequestMapping("/pedidos/{pedidoId}")
+@RequestMapping("/pedidos/{codigo}")
 public class FluxoPedidoController {
 
     @Autowired
@@ -27,20 +15,20 @@ public class FluxoPedidoController {
 
     @PutMapping("/confirmacao")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public  void confirmar(@PathVariable Long pedidoId){
-        pedidoService.confirmar(pedidoId);
+    public  void confirmar(@PathVariable String codigo){
+        pedidoService.confirmar(codigo);
     }
 
     @PutMapping("/cancelamento")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void cancelar(@PathVariable Long pedidoId){
-        pedidoService.cancelar(pedidoId);
+    public void cancelar(@PathVariable String codigo){
+        pedidoService.cancelar(codigo);
     }
 
     @PutMapping("/entrega")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void entregar(@PathVariable Long pedidoId){
-        pedidoService.entregar(pedidoId);
+    public void entregar(@PathVariable String codigo){
+        pedidoService.entregar(codigo);
     }
 
 }

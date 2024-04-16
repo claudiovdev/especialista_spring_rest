@@ -1,4 +1,4 @@
-package com.algaworks.algafood.core.config;
+package com.algaworks.algafood.core.config.modelMapper;
 
 import com.algaworks.algafood.api.model.request.ItemPedidoModelRequest;
 import com.algaworks.algafood.api.model.response.EnderecoModelResponse;

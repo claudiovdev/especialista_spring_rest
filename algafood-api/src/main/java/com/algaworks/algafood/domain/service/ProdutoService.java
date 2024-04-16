@@ -26,4 +26,8 @@ public class ProdutoService {
     public Produto salvarProduto(Produto produto) {
         return produtoRepository.save(produto);
     }
+
+    public List<Produto> busarProdutosAtivos(Restaurante restaurante) {
+        return produtoRepository.findAtivosByRestaurante(restaurante);
+    }
 }

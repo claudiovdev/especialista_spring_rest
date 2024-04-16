@@ -4,13 +4,16 @@ import com.algaworks.algafood.api.assembler.modelAssembler.RestauranteModelAssem
 import com.algaworks.algafood.api.assembler.modelDisassembler.RestauranteModelRequestDisassembler;
 import com.algaworks.algafood.api.model.request.RestauranteModelRequest;
 import com.algaworks.algafood.api.model.response.RestauranteModelResponse;
+import com.algaworks.algafood.api.model.views.RestauranteView;
 import com.algaworks.algafood.domain.exceptions.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.NegocioException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.RestauranteService;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,10 +35,32 @@ public class RestauranteController {
     RestauranteModelRequestDisassembler restauranteModelRequestDisassembler;
 
 
+
+//    @GetMapping
+//    public MappingJacksonValue listarRestaurantes(@RequestParam(required = false) String projecao){
+//        List<Restaurante> restaurantes = restauranteService.listar();
+//        List<RestauranteModelResponse> listaRestaurantesModelResponse = restauranteModelAssember.toCollectionToModel(restaurantes);
+//        MappingJacksonValue restauranteWrapper = new MappingJacksonValue(listaRestaurantesModelResponse);
+//        restauranteWrapper.setSerializationView(RestauranteView.Resumido.class);
+//        if ("apenas-nome".equals(projecao)){
+//            restauranteWrapper.setSerializationView(RestauranteView.ApenasNome.class);
+//        } else if ("completo".equals(projecao)) {
+//            restauranteWrapper.setSerializationView(null);
+//        }
+//
+//
+//        return restauranteWrapper;
+//    }
+    @JsonView(RestauranteView.Resumido.class)
     @GetMapping
-    public ResponseEntity<List<RestauranteModelResponse>> listarCozinhas(){
-        List<RestauranteModelResponse> cozinhas = restauranteModelAssember.toCollectionToModel(restauranteService.listar());
-        return ResponseEntity.ok().body(cozinhas);
+    public List<RestauranteModelResponse> listar(){
+        return restauranteModelAssember.toCollectionToModel(restauranteService.listar());
+    }
+
+    @JsonView(RestauranteView.ApenasNome.class)
+    @GetMapping(params = "projecao=apenas-nome")
+    public List<RestauranteModelResponse> listarCozinhasApenasNome(){
+        return listar();
     }
 
     @GetMapping("/{restauranteId}")

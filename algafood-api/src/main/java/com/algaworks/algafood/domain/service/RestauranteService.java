@@ -168,6 +168,10 @@ public class RestauranteService {
         Restaurante restaurante = buscarRestauranteExistente(restauranteId);
         return produtoService.buscarTodosProdutos(restaurante);
     }
+    public List<Produto> listarProdutosAtivos(Long restauranteId) {
+        Restaurante restaurante = buscarRestauranteExistente(restauranteId);
+        return produtoService.busarProdutosAtivos(restaurante);
+    }
 
     public Produto buscarProdutoPorRestaurante(Long restauranteId, Long produtoId) {
         Restaurante restaurante = buscarRestauranteExistente(restauranteId);

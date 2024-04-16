@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,8 +42,15 @@ public class RestauranteProdutoController {
     ProdutoModelDisassembler produtoModelDisassembler;
 
     @GetMapping()
-    List<ProdutoModelResponse> listar(@PathVariable Long restauranteId){
-        return produtoModelAssembler.toCollectionModelResponse(restauranteService.listarProdutos(restauranteId));
+    List<ProdutoModelResponse> listar(@PathVariable Long restauranteId,
+                                      @RequestParam(required = false) boolean incluirAtivos){
+        List<Produto> produtos = new ArrayList<>();
+        if (incluirAtivos){
+            produtos = restauranteService.listarProdutos(restauranteId);
+        }else {
+            produtos = restauranteService.listarProdutosAtivos(restauranteId);
+        }
+        return produtoModelAssembler.toCollectionModelResponse(produtos);
     }
 
     @GetMapping("/{produtoId}")

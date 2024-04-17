@@ -61,44 +61,20 @@ insert into permissao (id, nome, descricao) values (2, 'EDITAR_COZINHAS', 'Permi
 
 insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3), (4, 1), (4, 2), (5, 1), (5, 2), (6, 3);
 
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Porco com molho agridoce', 'Deliciosa carne suína ao molho especial', 78.90, 0, 1);
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Camarão tailandês', '16 camarões grandes ao molho picante', 110, 1, 1);
 
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Salmão grelhado ao molho de maracujá', 'Filé de salmão grelhado com molho de maracujá e acompanhamentos', 95.50, 0, 1);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Risoto de camarão', 'Risoto cremoso com camarões frescos e temperos especiais', 65.90, 1, 1);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Sobremesa do chef', 'Surpreenda-se com a sobremesa especial preparada pelo nosso chef', 25.00, 0, 1);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Feijoada completa', 'Tradicional feijoada brasileira com todos os acompanhamentos', 68.90, 1, 1);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Caipirinha de limão', 'Bebida refrescante com cachaça, limão e açúcar', 15.00, 1, 1);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Pudim de leite', 'Sobremesa cremosa à base de leite, ovos e açúcar', 22.50, 1, 1);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Pizza Margherita', 'Pizza clássica com molho de tomate, muçarela fresca e manjericão', 39.90, 0, 2);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Massa carbonara', 'Espaguete ao molho cremoso de queijo parmesão, pancetta e ovos', 55.00, 1, 2);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Tiramisu', 'Clássica sobremesa italiana à base de café e queijo mascarpone', 18.50, 1, 2);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Hambúrguer artesanal', 'Hambúrguer suculento com queijo cheddar e bacon', 29.90, 1, 2);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Batata frita com cheddar e bacon', 'Porção generosa de batata frita coberta com queijo cheddar e bacon', 18.50, 0, 2);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Milkshake de chocolate', 'Milkshake cremoso de chocolate com chantilly', 12.00, 1, 2);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Paneer Tikka Masala', 'Cubos de paneer grelhados com molho cremoso de tomate e especiarias', 36.50, 1, 3);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Biryani de cordeiro', 'Arroz basmati cozido com carne de cordeiro e temperos indianos', 68.00, 1, 3);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Gulab Jamun', 'Bolinhas de massa frita embebidas em calda de açúcar e cardamomo', 22.00, 1, 3);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Tikka Masala Vegetariano', 'Cubos de legumes grelhados com molho cremoso de tomate e especiarias', 32.00, 0, 3);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Samosa', 'Pastel indiano recheado com batata e ervilhas, frito até dourar', 14.90, 1, 3);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Lassi de manga', 'Bebida indiana refrescante à base de iogurte e manga', 10.50, 1, 3);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Fettuccine Alfredo', 'Massa fettuccine com molho cremoso de queijo parmesão', 42.90, 1, 4);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Lasanha à bolonhesa', 'Camadas de massa intercaladas com molho bolonhesa e queijo gratinado', 49.90, 0, 4);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Torta de maçã', 'Fatias de maçã envoltas em massa crocante e canela, assadas até dourar', 20.00, 1, 4);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Sushi misto', 'Seleção de sushis e sashimis frescos e variados', 59.90, 1, 4);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Yakissoba de frango', 'Macarrão chinês frito com tiras de frango e vegetais', 45.00, 1, 4);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Tempurá de legumes', 'Vegetais empanados e fritos acompanhados de molho especial', 24.50, 1, 4);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Sanduíche de frango grelhado', 'Pão artesanal recheado com peito de frango grelhado e vegetais frescos', 16.50, 0, 5);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Salada Caesar', 'Mix de folhas verdes com tiras de frango grelhado, croutons e molho Caesar', 18.90, 1, 5);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Batata frita crocante', 'Porção generosa de batatas fritas crocantes e saborosas', 10.00, 1, 5);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Sushi vegetariano', 'Seleção de sushis vegetarianos frescos e coloridos', 34.90, 1, 5);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Rolinho primavera', 'Rolinhos crocantes recheados com vegetais frescos e macios', 16.00, 0, 5);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Chá verde gelado', 'Bebida refrescante e saudável à base de chá verde gelado', 8.90, 1, 5);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Picanha na chapa', 'Suculenta picanha grelhada na chapa com temperos especiais', 75.00, 1, 6);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Feijoada completa', 'Feijoada tradicional com todos os acompanhamentos: arroz, couve, farofa e laranja', 55.00, 0, 6);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Creme de papaya com licor de cassis', 'Sobremesa refrescante com creme de mamão papaya e licor de cassis', 28.00, 1, 6);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Coxinha de frango', 'Salgado brasileiro recheado com frango desfiado e temperos', 5.50, 1, 6);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Pastel de queijo', 'Pastel frito com recheio de queijo derretido', 4.00, 1, 6);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Suco de abacaxi com hortelã', 'Suco natural e refrescante de abacaxi com folhas de hortelã', 7.50, 0, 6);
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Salada picante com carne grelhada', 'Salada de folhas com cortes finos de carne bovina grelhada e nosso molho especial de pimenta vermelha', 87.20, 1, 2);
 
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Garlic Naan', 'Pão tradicional indiano com cobertura de alho', 21, 1, 3);
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Murg Curry', 'Cubos de frango preparados com molho curry e especiarias', 43, 1, 3);
+
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Bife Ancho', 'Corte macio e suculento, com dois dedos de espessura, retirado da parte dianteira do contrafilé', 79, 1, 4);
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('T-Bone', 'Corte muito saboroso, com um osso em formato de T, sendo de um lado o contrafilé e do outro o filé mignon', 89, 1, 4);
+
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Sanduíche X-Tudo', 'Sandubão com muito queijo, hamburger bovino, bacon, ovo, salada e maionese', 19, 1, 5);
+
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
 
 
 insert into grupo (id, nome) values (1, 'Gerente'), (2, 'Vendedor'), (3, 'Secretária'), (4, 'Cadastrador');
@@ -138,3 +114,33 @@ values (2, 'd178b637-a785-4768-a3cb-aa1ce5a8cdab', 4, 1, 2, 1, '38400-111', 'Rua
 
 insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
 values (3, 2, 6, 1, 79, 79, 'Ao ponto');
+
+
+insert into pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep,
+                    endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro,
+	                status, data_criacao, data_confirmacao, data_entrega, subtotal, taxa_frete, valor_total)
+values (3, 'b5741512-8fbc-47fa-9ac1-b530354fc0ff', 1, 1, 1, 1, '38400-222', 'Rua Natal', '200', null, 'Brasil',
+        'ENTREGUE', '2019-10-30 21:10:00', '2019-10-30 21:10:45', '2019-10-30 21:55:44', 110, 10, 120);
+
+insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (4, 3, 2, 1, 110, 110, null);
+
+
+insert into pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep,
+                    endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro,
+	                status, data_criacao, data_confirmacao, data_entrega, subtotal, taxa_frete, valor_total)
+values (4, '5c621c9a-ba61-4454-8631-8aabefe58dc2', 1, 2, 1, 1, '38400-800', 'Rua Fortaleza', '900', 'Apto 504', 'Centro',
+        'ENTREGUE', '2019-11-02 20:34:04', '2019-11-02 20:35:10', '2019-11-02 21:10:32', 174.4, 5, 179.4);
+
+insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (5, 4, 3, 2, 87.2, 174.4, null);
+
+
+insert into pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep,
+                    endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro,
+	                status, data_criacao, data_confirmacao, data_entrega, subtotal, taxa_frete, valor_total)
+values (5, '8d774bcf-b238-42f3-aef1-5fb388754d63', 1, 3, 2, 1, '38400-200', 'Rua 10', '930', 'Casa 20', 'Martins',
+        'ENTREGUE', '2019-11-02 21:00:30', '2019-11-02 21:01:21', '2019-11-02 21:20:10', 87.2, 10, 97.2);
+
+insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (6, 5, 3, 1, 87.2, 87.2, null);

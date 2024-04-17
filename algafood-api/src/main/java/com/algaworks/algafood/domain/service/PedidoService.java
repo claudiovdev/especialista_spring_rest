@@ -4,6 +4,8 @@ import com.algaworks.algafood.domain.exceptions.FormaPagamentoInvalidaException;
 import com.algaworks.algafood.domain.exceptions.PedidoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.*;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
+import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
+import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +33,8 @@ public class PedidoService {
 
 
 
-    public List<Pedido> listarPedidos() {
-        return pedidoRepository.findAll();
+    public List<Pedido> listarPedidos(PedidoFilter pedidoFilter) {
+        return pedidoRepository.findAll(PedidoSpecs.usandoFiltro(pedidoFilter));
     }
 
     public Pedido buscarPedidoExistente(String codigoId) {

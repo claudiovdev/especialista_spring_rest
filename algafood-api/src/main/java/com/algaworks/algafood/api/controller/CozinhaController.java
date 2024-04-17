@@ -33,7 +33,7 @@ public class CozinhaController {
     private CozinhaModelRequestDisassembler cozinhaModelRequestDisassembler;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<CozinhaModelResponse> listar(@PageableDefault(size = 10it s) Pageable pageable){
+    public Page<CozinhaModelResponse> listar(@PageableDefault(size = 10) Pageable pageable){
         Page<Cozinha> cozinhasPage = cozinhaService.buscarTodas(pageable);
         List<CozinhaModelResponse> cozinhaModelResponseList = cozinhaModelAssembler.toCollectionModelResponse(cozinhasPage.getContent());
         Page<CozinhaModelResponse> cozinhaModelResponsePage = new PageImpl<>(cozinhaModelResponseList,pageable,cozinhasPage.getTotalElements());

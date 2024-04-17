@@ -7,6 +7,8 @@ import com.algaworks.algafood.domain.repository.PedidoRepository;
 import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
 import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,8 +35,8 @@ public class PedidoService {
 
 
 
-    public List<Pedido> listarPedidos(PedidoFilter pedidoFilter) {
-        return pedidoRepository.findAll(PedidoSpecs.usandoFiltro(pedidoFilter));
+    public Page<Pedido> listarPedidos(PedidoFilter pedidoFilter, Pageable pageable) {
+        return pedidoRepository.findAll(PedidoSpecs.usandoFiltro(pedidoFilter),pageable);
     }
 
     public Pedido buscarPedidoExistente(String codigoId) {

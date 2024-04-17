@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.assembler.modelDisassembler.PedidoModelDisasse
 import com.algaworks.algafood.api.model.request.PedidoModelRequest;
 import com.algaworks.algafood.api.model.response.PedidoModelResponse;
 import com.algaworks.algafood.api.model.response.PedidoResumidoModelResponse;
+import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.domain.exceptions.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exceptions.NegocioException;
 import com.algaworks.algafood.domain.model.Pedido;
@@ -15,8 +16,12 @@ import com.algaworks.algafood.domain.service.PedidoService;
 import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,9 +60,15 @@ public class PedidoController {
 //    }
 
     @GetMapping
-    public List<PedidoResumidoModelResponse> pesquisar(PedidoFilter filtro){
-        return pedidoResumoModelAssembler.toCollectionModelResponse(pedidoService.listarPedidos(filtro));
+    public Page<PedidoResumidoModelResponse> pesquisar(PedidoFilter filtro, Pageable pageable){
+        Pageable pageableTraduzida = traduzirPageable(pageable);
+        Page<Pedido> pedidos = pedidoService.listarPedidos(filtro, pageable);
+        List<PedidoResumidoModelResponse> listaPedidosModelResponse = pedidoResumoModelAssembler.toCollectionModelResponse(pedidos.getContent());
+        PageImpl page = new PageImpl<>(listaPedidosModelResponse, pageable,pedidos.getTotalElements());
+        return page;
     }
+
+
 
     @GetMapping("/{codigo}")
     public PedidoModelResponse buscarPedido(@PathVariable String codigo){
@@ -75,6 +86,19 @@ public class PedidoController {
         }catch (EntidadeNaoEncontradaException e){
             throw new NegocioException(e.getMessage());
         }
+
+    }
+
+    private Pageable traduzirPageable(Pageable pageable) {
+        var mapeamento = ImmutableMap.of(
+                "nomeCliente", "cliente.nome",
+                "codigo", "codigo",
+                "valorTotal", "valorTotal",
+                "restaurante.nome", "restaurante.nome"
+
+        );
+
+        return PageableTranslator.translate(pageable,mapeamento);
 
     }
 }

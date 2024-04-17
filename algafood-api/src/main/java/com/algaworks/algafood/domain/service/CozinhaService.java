@@ -8,6 +8,8 @@ import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,8 +26,8 @@ public class CozinhaService {
     @Autowired
     CozinhaRepository cozinhaRepository;
 
-    public List<Cozinha> buscarTodas(){
-        return cozinhaRepository.findAll();
+    public Page<Cozinha> buscarTodas(Pageable pageable){
+        return cozinhaRepository.findAll(pageable);
     }
 
     @Transactional

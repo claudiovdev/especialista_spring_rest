@@ -4,14 +4,12 @@ import com.algaworks.algafood.domain.exceptions.FormaPagamentoInvalidaException;
 import com.algaworks.algafood.domain.exceptions.PedidoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.*;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
-import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
+import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class PedidoService {

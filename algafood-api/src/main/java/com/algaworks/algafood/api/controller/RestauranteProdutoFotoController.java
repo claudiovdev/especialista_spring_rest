@@ -45,4 +45,11 @@ public class RestauranteProdutoFotoController {
         foto.setNomeArquivo(arquivo.getOriginalFilename());
        return fotoProdutoAssembler.toModelResponse(catalogoFotoProdutoservice.salvar(foto, arquivo.getInputStream()));
     }
+
+    @GetMapping
+    public  FotoProdutoModelResponse buscar(@PathVariable Long restauranteId,
+                               @PathVariable Long produtoId){
+        FotoProduto fotoProduto = catalogoFotoProdutoservice.buscarFotoProduto(restauranteId, produtoId);
+        return fotoProdutoAssembler.toModelResponse(fotoProduto);
+    }
 }

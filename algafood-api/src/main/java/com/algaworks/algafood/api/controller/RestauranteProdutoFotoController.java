@@ -1,11 +1,19 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.assembler.modelAssembler.FotoProdutoAssembler;
 import com.algaworks.algafood.api.model.request.FotoProdutoModelRequest;
+import com.algaworks.algafood.api.model.response.FotoProdutoModelResponse;
+import com.algaworks.algafood.domain.model.FotoProduto;
+import com.algaworks.algafood.domain.model.Produto;
+import com.algaworks.algafood.domain.service.CatalogoFotoProdutoservice;
+import com.algaworks.algafood.domain.service.ProdutoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.UUID;
 
@@ -13,21 +21,28 @@ import java.util.UUID;
 @RequestMapping("restaurantes/{restauranteId}/produtos/{produtoId}/foto")
 public class RestauranteProdutoFotoController {
 
+    @Autowired
+    private ProdutoService produtoService;
+    @Autowired
+    private CatalogoFotoProdutoservice catalogoFotoProdutoservice;
+
+    @Autowired
+    private FotoProdutoAssembler fotoProdutoAssembler;
+
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void atualizarFoto(@PathVariable Long restauranteId,
-                              @PathVariable Long produtoId,
-                              @Valid FotoProdutoModelRequest fotoProdutoModelRequest){
-        var nomeArquivo = UUID.randomUUID() + "_" + fotoProdutoModelRequest.getArquivo().getOriginalFilename();
-        var arquivoFoto = Path.of("/Users/USER/Documents/catalogo", nomeArquivo);
-        System.out.println(arquivoFoto);
-        System.out.println(fotoProdutoModelRequest.getArquivo().getContentType());
-        System.out.println(fotoProdutoModelRequest.getDescricao());
+    public FotoProdutoModelResponse atualizarFoto(@PathVariable Long restauranteId,
+                                                  @PathVariable Long produtoId,
+                                                  @Valid FotoProdutoModelRequest fotoProdutoModelRequest) throws IOException {
+        Produto produto = produtoService.buscarProdutoExistente(produtoId,restauranteId);
+        MultipartFile arquivo = fotoProdutoModelRequest.getArquivo();
 
-        try {
-            fotoProdutoModelRequest.getArquivo().transferTo(arquivoFoto);
-        }catch (Exception e){
-            throw  new RuntimeException(e);
-        }
+        FotoProduto foto = new FotoProduto();
 
+        foto.setProduto(produto);
+        foto.setDescricao(fotoProdutoModelRequest.getDescricao());
+        foto.setContentType(arquivo.getContentType());
+        foto.setTamanho(arquivo.getSize());
+        foto.setNomeArquivo(arquivo.getOriginalFilename());
+       return fotoProdutoAssembler.toModelResponse(catalogoFotoProdutoservice.salvar(foto, arquivo.getInputStream()));
     }
 }

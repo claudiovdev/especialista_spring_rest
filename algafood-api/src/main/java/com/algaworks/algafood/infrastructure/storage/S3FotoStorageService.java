@@ -3,6 +3,7 @@ package com.algaworks.algafood.infrastructure.storage;
 import com.algaworks.algafood.core.storage.StorageProperties;
 import com.algaworks.algafood.domain.service.FotoStorageService;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,14 @@ public class S3FotoStorageService implements FotoStorageService {
             String caminhoS3 = getCaminhoS3(novaFoto.getNomeArquivo());
 
             var objectMetaData = new ObjectMetadata();
+            objectMetaData.setContentType(novaFoto.getContentType());
 
             var putObjectRequest = new PutObjectRequest(
                     storageProperties.getS3().getBucket(),
                     caminhoS3,
                     novaFoto.getInputStream(),
-                    objectMetaData);
+                    objectMetaData)
+                    .withCannedAcl(CannedAccessControlList.PublicRead);
 
             amazonS3.putObject(putObjectRequest);
         }catch (Exception e){

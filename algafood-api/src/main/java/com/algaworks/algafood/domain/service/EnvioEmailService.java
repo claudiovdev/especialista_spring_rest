@@ -6,6 +6,7 @@ import lombok.NonNull;
 import lombok.Singular;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Set;
 
 
@@ -21,5 +22,7 @@ public interface EnvioEmailService {
         private String assunto;
         @NonNull
         private String corpo;
+        @Singular("variavel")
+        Map<String, Object> variaveis;
     }
 }

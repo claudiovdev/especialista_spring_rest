@@ -28,7 +28,8 @@ public class FluxoPedidoService {
 
         var mensagem = Mensagem.builder()
                 .assunto(pedido.getRestaurante().getNome() + " + Pedido confimado")
-                .corpo("O pedido de codigo: " + pedido.getCodigo() + " foi cofirmaado!!")
+                .corpo("pedido-confirmado.html")
+                .variavel("pedido", pedido)
                 .destinatarios(Collections.singleton(pedido.getCliente().getEmail()))
                 .build();
 

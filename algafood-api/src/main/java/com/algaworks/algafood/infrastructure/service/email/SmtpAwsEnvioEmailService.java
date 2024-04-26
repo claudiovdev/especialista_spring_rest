@@ -13,7 +13,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
 
 import javax.mail.internet.MimeMessage;
 
-@Component
+
 public class SmtpAwsEnvioEmailService implements EnvioEmailService {
 
     @Autowired
@@ -45,7 +45,7 @@ public class SmtpAwsEnvioEmailService implements EnvioEmailService {
 
     }
 
-    private String processarTemplate(Mensagem mensagem) {
+    public String processarTemplate(Mensagem mensagem) {
         try{
             Template template = freemaker.getTemplate(mensagem.getCorpo());
 

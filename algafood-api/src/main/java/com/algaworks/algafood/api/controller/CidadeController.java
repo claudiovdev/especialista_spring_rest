@@ -10,6 +10,7 @@ import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.service.CidadeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,13 +39,14 @@ public class CidadeController {
 
     @ApiOperation("Busca cidade por identificador")
     @GetMapping("/{cidadeId}")
-    public CidadeModelResponse buscar(@PathVariable Long cidadeId){
+    public CidadeModelResponse buscar(@ApiParam(value = "Id de uma cidade", example = "1") @PathVariable Long cidadeId){
         return cidadeModelAssembler.toModelResponse(cidadeService.buscarCidadeExistente(cidadeId));
     }
 
+    @ApiOperation("Cadastrar uma cidade")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<CidadeModelResponse> salvar( @Valid @RequestBody CidadeModelRequest cidadeModelRequest){
+    public ResponseEntity<CidadeModelResponse> salvar( @ApiParam(name = "Corpo", value = "Representação de uma cidade")@Valid @RequestBody CidadeModelRequest cidadeModelRequest){
         Cidade cidade = cidadeModelDisassembler.toDomain(cidadeModelRequest);
         return ResponseEntity.ok().body(cidadeModelAssembler.toModelResponse(cidadeService.salvar(cidade)));
     }

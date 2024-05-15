@@ -1,5 +1,7 @@
 package com.algaworks.algafood.core.openapi;
 
+import com.algaworks.algafood.api.exceptionhandler.Problem;
+import com.fasterxml.classmate.TypeResolver;
 import net.sf.jasperreports.data.http.RequestMethod;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +30,7 @@ public class SwaggerConfig {
 
     @Bean
     public Docket apiDocket() {
+        var typeResolver = new TypeResolver();
         return new Docket(DocumentationType.OAS_30)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
@@ -39,6 +42,7 @@ public class SwaggerConfig {
                 .globalResponses(HttpMethod.POST, globalPostPutResponse())
                 .globalResponses(HttpMethod.PUT, globalPostPutResponse())
                 .globalResponses(HttpMethod.DELETE, globalPostPutResponse())
+                .additionalModels(typeResolver.resolve(Problem.class))
                 .apiInfo(apiInfo())
                 .tags(new Tag("Cidades", "Gerencia as cidades"));
     }

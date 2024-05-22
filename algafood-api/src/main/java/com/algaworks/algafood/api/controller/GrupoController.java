@@ -2,20 +2,22 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.modelAssembler.GrupoModelAssembler;
 import com.algaworks.algafood.api.assembler.modelDisassembler.GrupoModelDisassembler;
+import com.algaworks.algafood.api.controller.openapi.GruposControllerOpenApi;
 import com.algaworks.algafood.api.model.request.GrupoModelRequest;
 import com.algaworks.algafood.api.model.response.GrupoModelResponse;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.service.GrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/grupos")
-public class GrupoController {
+@RequestMapping(path = "/grupos",produces = MediaType.APPLICATION_JSON_VALUE)
+public class GrupoController implements GruposControllerOpenApi {
 
     @Autowired
     private GrupoService grupoService;

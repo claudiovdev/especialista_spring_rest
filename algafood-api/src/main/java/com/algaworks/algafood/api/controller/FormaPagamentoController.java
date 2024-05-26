@@ -54,7 +54,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
         return formaPagamentoAssembler.toModelResponse(formaPagamentoService.salvar(formaPagamento));
     }
 
-    @DeleteMapping(value = "/{formaPagamentoId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Long formaPagamentoId){
         formaPagamentoService.deletar(formaPagamentoId);

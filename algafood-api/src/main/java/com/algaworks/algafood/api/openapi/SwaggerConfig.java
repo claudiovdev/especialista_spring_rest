@@ -54,7 +54,8 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .tags(new Tag("Cidades", "Gerencia as cidades"),
                         new Tag("Grupos", "Gerencia os grupos de usuarios"),
-                        new Tag("Cozinhas", "Gerencia as cozinhas"));
+                        new Tag("Cozinhas", "Gerencia as cozinhas"),
+                        new Tag("Formas de Pagamento", "Formas de pagamento"));
     }
 
     @Bean

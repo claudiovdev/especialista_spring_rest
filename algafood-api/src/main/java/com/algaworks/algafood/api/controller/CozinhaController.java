@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.assembler.modelAssembler.CozinhaModelAssembler
 import com.algaworks.algafood.api.assembler.modelDisassembler.CozinhaModelRequestDisassembler;
 import com.algaworks.algafood.api.model.request.CozinhaModelRequest;
 import com.algaworks.algafood.api.model.response.CozinhaModelResponse;
+import com.algaworks.algafood.api.openapi.controller.CozinhaControllerOpenApi;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.service.CozinhaService;
 import org.springframework.beans.BeanUtils;
@@ -20,8 +21,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cozinhas")
-public class CozinhaController {
+@RequestMapping(path = "/api/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
+public class CozinhaController implements CozinhaControllerOpenApi {
 
     @Autowired
     private CozinhaService cozinhaService;
@@ -40,27 +41,27 @@ public class CozinhaController {
         return cozinhaModelResponsePage;
     }
 
-    @GetMapping("/{cozinhaId}")
+    @GetMapping(value = "/{cozinhaId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public CozinhaModelResponse buscar(@PathVariable(value = "cozinhaId") Long cozinhaId) {
         return cozinhaModelAssembler.toModelResponse(cozinhaService.buscarCozinhaExistente(cozinhaId));
     }
 
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public CozinhaModelResponse adicionar(@RequestBody @Valid CozinhaModelRequest cozinhaModelRequest){
         Cozinha cozinha = cozinhaModelRequestDisassembler.toDomain(cozinhaModelRequest);
         return cozinhaModelAssembler.toModelResponse(cozinhaService.salvar(cozinha));
     }
 
-    @PutMapping("/{cozinhaId}")
+    @PutMapping(value = "/{cozinhaId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CozinhaModelResponse atualizar(@PathVariable @Valid Long cozinhaId, @RequestBody CozinhaModelRequest cozinha){
         Cozinha cozinhaExistente = cozinhaService.buscarCozinhaExistente(cozinhaId);
         BeanUtils.copyProperties(cozinha, cozinhaExistente, "id");
         return cozinhaModelAssembler.toModelResponse(cozinhaService.salvar(cozinhaExistente));
     }
 
-    @DeleteMapping("/{cozinhaId}")
+    @DeleteMapping(value = "/{cozinhaId}", produces = {})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Long cozinhaId) {
         cozinhaService.excluir(cozinhaId);

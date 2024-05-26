@@ -2,7 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.modelAssembler.GrupoModelAssembler;
 import com.algaworks.algafood.api.assembler.modelDisassembler.GrupoModelDisassembler;
-import com.algaworks.algafood.api.controller.openapi.GruposControllerOpenApi;
+import com.algaworks.algafood.api.openapi.controller.GruposControllerOpenApi;
 import com.algaworks.algafood.api.model.request.GrupoModelRequest;
 import com.algaworks.algafood.api.model.response.GrupoModelResponse;
 import com.algaworks.algafood.domain.model.Grupo;

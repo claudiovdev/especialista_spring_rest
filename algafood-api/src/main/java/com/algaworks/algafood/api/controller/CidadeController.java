@@ -2,8 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.modelAssembler.CidadeModelAssembler;
 import com.algaworks.algafood.api.assembler.modelDisassembler.CidadeModelDisassembler;
-import com.algaworks.algafood.api.controller.openapi.CidadeControllerOpenApi;
-import com.algaworks.algafood.api.exceptionhandler.Problem;
+import com.algaworks.algafood.api.openapi.controller.CidadeControllerOpenApi;
 import com.algaworks.algafood.api.model.request.CidadeModelRequest;
 import com.algaworks.algafood.api.model.response.CidadeModelResponse;
 import com.algaworks.algafood.domain.exceptions.EstadoNaoEncontradoException;

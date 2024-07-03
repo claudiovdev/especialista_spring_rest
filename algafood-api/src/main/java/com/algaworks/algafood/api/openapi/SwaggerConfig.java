@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.openapi;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.response.CozinhaModelResponse;
+import com.algaworks.algafood.api.model.response.PedidoModelResponse;
 import com.algaworks.algafood.api.openapi.model.PageModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
@@ -51,12 +52,16 @@ public class SwaggerConfig {
                 .directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(Page.class, CozinhaModelResponse.class), PageModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(Page.class, PedidoModelResponse.class), PageModelOpenApi.class)
+                )
                 .apiInfo(apiInfo())
                 .tags(new Tag("Cidades", "Gerencia as cidades"),
                         new Tag("Grupos", "Gerencia os grupos de usuarios"),
                         new Tag("Cozinhas", "Gerencia as cozinhas"),
                         new Tag("Formas de Pagamento", "Formas de pagamento"),
-                        new Tag("Pedidos", "Gerencia os pedidos"));
+                        new Tag("Pedidos", "Gerencia os pedidos"),
+                        new Tag("Restaurantes","Gerencia os restaurantes"));
     }
 
     @Bean

@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.request.PedidoModelRequest;
 import com.algaworks.algafood.api.model.response.PedidoModelResponse;
 import com.algaworks.algafood.api.model.response.PedidoResumidoModelResponse;
+import com.algaworks.algafood.api.openapi.model.PageModelOpenApi;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Page;
@@ -11,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 
 
 @Api(tags = "Pedidos")
-public interface PedidoControllerOpenApi {
+public interface PedidoControllerOpenApi{
     @ApiImplicitParams({
             @ApiImplicitParam(value = "Nome da propriedade para filtrar na resposta, separados por virgula",
                     name = "campos", paramType = "query", type = "string")

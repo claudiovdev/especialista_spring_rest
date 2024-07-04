@@ -12,6 +12,6 @@ public class EstadoModelResponse {
     @ApiModelProperty(example = "1")
     private Long id;
     @NotBlank()
-    @ApiModelProperty(example = "RJ")
+    @ApiModelProperty(example = "RIo de Janeiro")
     private String nome;
 }

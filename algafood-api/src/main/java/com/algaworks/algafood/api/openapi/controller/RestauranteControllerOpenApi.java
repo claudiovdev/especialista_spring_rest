@@ -4,10 +4,12 @@ import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.request.RestauranteModelRequest;
 import com.algaworks.algafood.api.model.response.RestauranteModelResponse;
 import io.swagger.annotations.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 @Api(tags = "Restaurantes")
 public interface RestauranteControllerOpenApi {
@@ -32,7 +34,6 @@ public interface RestauranteControllerOpenApi {
     RestauranteModelResponse atualizar(@ApiParam(value = "Id do restaurante",example = "1", required = true) Long restauranteId,
                                        @ApiParam(name = "Corpo", value = "Representação do restaurante com dados novos", required = true)
                                        RestauranteModelRequest restauranteModelRequest);
-
 
 
 }

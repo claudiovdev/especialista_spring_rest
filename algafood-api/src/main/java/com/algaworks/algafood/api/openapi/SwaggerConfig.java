@@ -61,7 +61,8 @@ public class SwaggerConfig {
                         new Tag("Cozinhas", "Gerencia as cozinhas"),
                         new Tag("Formas de Pagamento", "Formas de pagamento"),
                         new Tag("Pedidos", "Gerencia os pedidos"),
-                        new Tag("Restaurantes","Gerencia os restaurantes"));
+                        new Tag("Restaurantes","Gerencia os restaurantes"),
+                        new Tag("Estados","Gerencia os estados"));
     }
 
     @Bean

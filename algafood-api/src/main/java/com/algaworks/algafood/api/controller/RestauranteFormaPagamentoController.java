@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.modelAssembler.FormaPagamentoAssembler;
 import com.algaworks.algafood.api.model.response.FormaPagamentoModelResponse;
+import com.algaworks.algafood.api.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.RestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("restaurantes/{restauranteId}/forma-pagamento")
-public class RestauranteFormaPagamentoController {
+public class RestauranteFormaPagamentoController implements RestauranteFormaPagamentoControllerOpenApi {
 
     @Autowired
     RestauranteService restauranteService;

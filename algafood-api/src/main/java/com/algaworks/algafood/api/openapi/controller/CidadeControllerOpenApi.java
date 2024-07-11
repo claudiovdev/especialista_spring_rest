@@ -24,7 +24,7 @@ public interface CidadeControllerOpenApi {
 
     @ApiOperation("Cadastrar uma cidade")
     @ApiResponses({ @ApiResponse(code = 204, message = "Cidade cadastrada"),})
-    public ResponseEntity<CidadeModelResponse> salvar(@ApiParam(name = "Corpo", value = "Representação de uma cidade")CidadeModelRequest cidadeModelRequest);
+    CidadeModelResponse salvar(@ApiParam(name = "Corpo", value = "Representação de uma cidade")CidadeModelRequest cidadeModelRequest);
 
     @ApiResponses({ @ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class),
             @ApiResponse(code = 200, message = "Cidade Atualizada", response = Problem.class)})

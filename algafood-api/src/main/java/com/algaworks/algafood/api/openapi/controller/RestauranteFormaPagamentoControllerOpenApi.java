@@ -13,5 +13,5 @@ public interface RestauranteFormaPagamentoControllerOpenApi {
     @ApiResponses({
             @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-    public List<FormaPagamentoModelResponse> listarCozinhas(@ApiParam(value = "Id do restaurante",dd  required = true) Long restauranteId);
+    public List<FormaPagamentoModelResponse> listarCozinhas(@ApiParam(value = "Id do restaurante", required = true) Long restauranteId);
 }

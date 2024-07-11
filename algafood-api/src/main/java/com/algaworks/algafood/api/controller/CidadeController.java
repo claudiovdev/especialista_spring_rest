@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.ResourceUriHelper;
 import com.algaworks.algafood.api.assembler.modelAssembler.CidadeModelAssembler;
 import com.algaworks.algafood.api.assembler.modelDisassembler.CidadeModelDisassembler;
 import com.algaworks.algafood.api.openapi.controller.CidadeControllerOpenApi;
@@ -10,13 +11,19 @@ import com.algaworks.algafood.domain.exceptions.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.service.CidadeService;
 import io.swagger.annotations.*;
+import org.apache.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 
@@ -42,9 +49,11 @@ public class CidadeController implements CidadeControllerOpenApi {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<CidadeModelResponse> salvar( @ApiParam(name = "Corpo", value = "Representação de uma cidade")@Valid @RequestBody CidadeModelRequest cidadeModelRequest){
+    public CidadeModelResponse salvar( @ApiParam(name = "Corpo", value = "Representação de uma cidade")@Valid @RequestBody CidadeModelRequest cidadeModelRequest){
         Cidade cidade = cidadeModelDisassembler.toDomain(cidadeModelRequest);
-        return ResponseEntity.ok().body(cidadeModelAssembler.toModelResponse(cidadeService.salvar(cidade)));
+        CidadeModelResponse cidadeModelResponse = cidadeModelAssembler.toModelResponse(cidadeService.salvar(cidade));
+        ResourceUriHelper.addUriResponseHeader(cidadeModelResponse.getId());
+        return cidadeModelResponse;
     }
 
     @PutMapping("/{cidadeId}")

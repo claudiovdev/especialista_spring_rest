@@ -38,7 +38,7 @@ public class SwaggerConfig {
     public Docket apiDocket() {
         var typeResolver = new TypeResolver();
 
-        return new Docket(DocumentationType.OAS_30)
+        return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
                 .paths(PathSelectors.any())

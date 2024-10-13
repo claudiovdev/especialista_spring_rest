@@ -40,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
+    //Criando metodo de criptografia de senha
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();

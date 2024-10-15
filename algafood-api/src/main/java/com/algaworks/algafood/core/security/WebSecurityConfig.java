@@ -28,9 +28,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    @Bean
-    public JwtDecoder jwtDecoder(){
-        var secretKey = new SecretKeySpec("sfa987sfa98fsa4saf9saf84fsa98sfa79fas8sfa498sfa97".getBytes(), "HmacSHA256");
-        return NimbusJwtDecoder.withSecretKey(secretKey).build();
-    }
+
+
+//    @Bean
+//    public JwtDecoder jwtDecoder(){
+//        var secretKey = new SecretKeySpec("sfa987sfa98fsa4saf9saf84fsa98sfa79fas8sfa498sfa97".getBytes(), "HmacSHA256");
+//        return NimbusJwtDecoder.withSecretKey(secretKey).build();
+//    }
 }

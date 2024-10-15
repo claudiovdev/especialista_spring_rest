@@ -3,3 +3,4 @@ http:localhost:8081/oauth/authorize?response_type=code&client_id=foodanalytics&s
 
 Implicit
 http:localhost:8081/oauth/authorize?response_type=token&client_id=webadmin&state=abc&redirect_uri=http://aplicacao-cliente
+

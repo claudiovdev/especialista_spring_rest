@@ -1,0 +1,2 @@
+keytool -genkeypair -alias algafood -keyalg RSA -keypass 123456 -keystore algafood.jks -storepass 123456
+
